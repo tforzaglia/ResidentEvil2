@@ -1,4 +1,10 @@
 11/2/2012 2:14 AM
 First commit.
 Created the classes for the main board and the main character.
-Right now the program produces a black board and allows the user to move Leon around the screen
+CURRENT STATE: Right now the program produces a black board and allows the user to move Leon around the screen
+
+11/4/2012 1:15 AM (really 2:15 due to daylight savings)
+Added the ability to shoot bullets
+Added an enemy class. Right now its using a zombie as a picture. The Enemy class will be a superclass for all of the possible enemy subclasses.
+Added collision detection for the enemies and Leon as well as the bullets and the enemies
+CURRENT STATE: Program produces a black board with Leon and a zombie moving towards him. Leon can shoot bullets (unlimited for now). When a bullet makes contact with the zombie, it will disappear.
