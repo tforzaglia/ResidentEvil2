@@ -1,4 +1,4 @@
-package re2;
+package Rooms;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -14,26 +14,37 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.Timer;
+import re2.Bullet;
+import re2.Enemy;
+import re2.Entrance;
+import re2.Leon;
+import re2.Main;
 
 public class Board extends JPanel implements ActionListener {
     
-    private Timer timer;
-    private Leon leon;
-    private ArrayList enemies;
-    private boolean ingame;
-    private int B_WIDTH;
-    private int B_HEIGHT;
+    public Timer timer;
+    public Leon leon;
+    public ArrayList enemies;
+    public ArrayList entrances;
+    public boolean ingame;
+    public int B_WIDTH;
+    public int B_HEIGHT;
+    public boolean changeRoom;
+    public String currentRoom;
     
     public Board() {
         
         addKeyListener(new TAdapter());
         setFocusable(true);
-        setBackground(Color.BLACK);
+        setBackground(Color.GRAY);
         setDoubleBuffered(true);
         ingame = true;
-        
+        currentRoom="room1";
         leon = new Leon();
+        changeRoom=false;
+        Main.oldRoom=currentRoom;
         initEnemies();
+        initEntrances();
         timer = new Timer(5, this);
         timer.start();
     }
@@ -58,6 +69,15 @@ public class Board extends JPanel implements ActionListener {
             enemies.add(new Enemy(600,60));
       //  }
     }
+    
+    public void initEntrances() {
+         
+        entrances = new ArrayList();
+
+      //  for (int i=0; i<pos.length; i++ ) {
+            entrances.add(new Entrance(900,10, "test"));
+      //  }
+    }
  
     /**
      *
@@ -71,14 +91,20 @@ public class Board extends JPanel implements ActionListener {
         if (ingame) { 
             
             Graphics2D graphics2d = (Graphics2D) graphics;
-            graphics2d.drawImage(leon.getImage(), leon.getX(), leon.getY(), this);
             ArrayList clip = leon.getBullets();
 
+            for (int i = 0; i < entrances.size(); i++) {
+                Entrance entrance = (Entrance)entrances.get(i);
+                graphics2d.drawImage(entrance.getImage(), entrance.getX(), entrance.getY(), this);  
+            }
+            
             //draw all of the bullets from the array list
             for (int i = 0; i < clip.size(); i++) {
                 Bullet bullet = (Bullet) clip.get(i);
                 graphics2d.drawImage(bullet.getImage(), bullet.getX(), bullet.getY(), this);
             }
+            
+            graphics2d.drawImage(leon.getImage(), leon.getX(), leon.getY(), this);
             
             //draw all enemies from the array (have position set in each enemy object)
             for (int i = 0; i < enemies.size(); i++) {
@@ -86,7 +112,7 @@ public class Board extends JPanel implements ActionListener {
                 if(enemy.isVisible()) {
                     graphics2d.drawImage(enemy.getImage(), enemy.getX(), enemy.getY(), this);
                 }
-            }    
+            }      
         }
         else {
             String message = "YOU ARE DEAD";
@@ -97,6 +123,7 @@ public class Board extends JPanel implements ActionListener {
             graphics.setFont(font);
             graphics.drawString(message, (B_WIDTH = metrics.stringWidth(message)) / 2, B_HEIGHT / 2);
         }
+        
         Toolkit.getDefaultToolkit().sync();
         graphics.dispose();
     }
@@ -139,7 +166,16 @@ public class Board extends JPanel implements ActionListener {
     public void checkCollisions() {
         
         Rectangle r3 = leon.getBounds();
-        
+        for(int l = 0; l < entrances.size(); l++) {
+                Entrance entrance = (Entrance) entrances.get(l);
+                Rectangle r5 = entrance.getBounds();
+                if(r3.intersects(r5)) {
+                    Main.newRoom=entrance.getLeadsTo();  
+                    changeRoom=true;
+                   // System.out.println("DEBUG : going to "+entrance.getLeadsTo() + " " + changeRoom + " " + currentRoom);
+                }   
+            }
+
         for(int j = 0; j < enemies.size(); j++) {
             Enemy enemy = (Enemy) enemies.get(j);
             Rectangle r2 = enemy.getBounds();
@@ -151,7 +187,7 @@ public class Board extends JPanel implements ActionListener {
                     //move leon backwards a bit
                 //else (health == 0)
                     //ingame = false (game over)
-                System.out.println("DEBUG : ATTCKED!");
+                //System.out.println("DEBUG : ATTCKED!");
             }
             
             ArrayList clip = leon.getBullets();
@@ -163,21 +199,23 @@ public class Board extends JPanel implements ActionListener {
                 
                 for(int k = 0; k < enemies.size(); k++) {
                     Enemy enemy1 = (Enemy)enemies.get(k);
-                    Rectangle r4 = enemy.getBounds();
+                    Rectangle r4 = enemy1.getBounds();
                     
                     //bullet hit and enemy
                     if(r1.intersects(r4)) {
                         bullet.setVisible(false);
                         //if enemy health == 0
                         enemy.setVisible(false);
-                        //else maybe make the enemy flash or move back
+                        //else maybe make the enemy flash or move back                        
                     }
                 }
-            }
+            }   
         }
+        
+        
     }
     
-    private class TAdapter extends KeyAdapter {
+    public class TAdapter extends KeyAdapter {
         
         @Override
         public void keyReleased(KeyEvent keyEvent) {  

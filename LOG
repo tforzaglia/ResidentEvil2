@@ -8,3 +8,11 @@ Added the ability to shoot bullets
 Added an enemy class. Right now its using a zombie as a picture. The Enemy class will be a superclass for all of the possible enemy subclasses.
 Added collision detection for the enemies and Leon as well as the bullets and the enemies
 CURRENT STATE: Program produces a black board with Leon and a zombie moving towards him. Leon can shoot bullets (unlimited for now). When a bullet makes contact with the zombie, it will disappear.
+
+11/5 6:30 AM
+Added subclasses of the Board class for individual rooms. These subclasses will eventually have the scenery, enemy placement, and door placement specific to the room.
+Added an Entrance class and a picture of a door to go to new areas
+Problems: In Main...
+	Not recognizing room1 as the current class
+	Doesn't seem like the changeRoom boolean is being set properly 
+CURRENT STATE: Program produces the same output as previous with the addition of a door on the left of the screen

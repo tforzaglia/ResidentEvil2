@@ -17,12 +17,10 @@ public class Leon {
     //current poisition
     private int x;
     private int y;
-    
-    
+     
     private int height;
     private int width;
-    
-    
+      
     private Image image;
     
     private ArrayList bullets;
