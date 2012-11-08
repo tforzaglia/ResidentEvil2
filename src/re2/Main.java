@@ -34,7 +34,7 @@ public class Main extends JFrame {
         map.put("room2", room2);
         
         frame.getContentPane().add(room1);
-        oldRoom="room1";
+        
         //DEUBUG CODE
        // Scanner scan = new Scanner(System.in);
       //  int i = scan.nextInt();
