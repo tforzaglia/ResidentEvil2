@@ -1,4 +1,4 @@
-package Rooms;
+package re2;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -14,23 +14,17 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.Timer;
-import re2.Bullet;
-import re2.Enemy;
-import re2.Entrance;
-import re2.Leon;
-import re2.Main;
 
 public class Board extends JPanel implements ActionListener {
     
-    public Timer timer;
-    public Leon leon;
-    public ArrayList enemies;
-    public ArrayList entrances;
-    public boolean ingame;
-    public int B_WIDTH;
-    public int B_HEIGHT;
-    public boolean changeRoom;
-    public String currentRoom;
+    private Timer timer;
+    private Leon leon;
+    private ArrayList enemies;
+    private ArrayList entrances;
+    private boolean ingame;
+    private int B_WIDTH;
+    private int B_HEIGHT;
+    private String currentRoom;
     
     public Board() {
         
@@ -38,20 +32,16 @@ public class Board extends JPanel implements ActionListener {
         setFocusable(true);
         setBackground(Color.GRAY);
         setDoubleBuffered(true);
+        
         ingame = true;
-        currentRoom="room1";
         leon = new Leon();
-        changeRoom=false;
-        Main.oldRoom=currentRoom;
         initEnemies();
         initEntrances();
+        
         timer = new Timer(5, this);
         timer.start();
     }
     
-    /**
-     *
-     */
     @Override
     public void addNotify() {
         
@@ -60,23 +50,17 @@ public class Board extends JPanel implements ActionListener {
         B_HEIGHT = getHeight();
     }
 
-//  place the enemies on the screen -- get the position from an acessor method from the enemy class
     public void initEnemies() {
          
         enemies = new ArrayList();
-
-      //  for (int i=0; i<pos.length; i++ ) {
-            enemies.add(new Enemy(600,60));
-      //  }
+        enemies.add(new Enemy(600,60));
     }
     
     public void initEntrances() {
-         
+        
+        setCurrentRoom("room1"); 
         entrances = new ArrayList();
-
-      //  for (int i=0; i<pos.length; i++ ) {
-            entrances.add(new Entrance(900,10, "test"));
-      //  }
+        entrances.add(new Entrance(300,10, "room2"));
     }
  
     /**
@@ -88,7 +72,7 @@ public class Board extends JPanel implements ActionListener {
         
         super.paint(graphics);
 
-        if (ingame) { 
+        if(ingame) { 
             
             Graphics2D graphics2d = (Graphics2D) graphics;
             ArrayList clip = leon.getBullets();
@@ -160,6 +144,8 @@ public class Board extends JPanel implements ActionListener {
         
         leon.move();
         checkCollisions();
+        System.out.println("DEBUG :" + getCurrentRoom());
+        checkChangeRoom();
         repaint();
     }
     
@@ -169,10 +155,8 @@ public class Board extends JPanel implements ActionListener {
         for(int l = 0; l < entrances.size(); l++) {
                 Entrance entrance = (Entrance) entrances.get(l);
                 Rectangle r5 = entrance.getBounds();
-                if(r3.intersects(r5)) {
-                    Main.newRoom=entrance.getLeadsTo();  
-                    changeRoom=true;
-                   // System.out.println("DEBUG : going to "+entrance.getLeadsTo() + " " + changeRoom + " " + currentRoom);
+                if(r3.intersects(r5)) {                 
+                    setCurrentRoom(entrance.getLeadsTo());//parameter needs to be variable -- entrance.getLeadsTo()
                 }   
             }
 
@@ -210,9 +194,35 @@ public class Board extends JPanel implements ActionListener {
                     }
                 }
             }   
+        }  
+    }
+    
+    public void checkChangeRoom() {
+         
+        if(getCurrentRoom().equals("room2")) {
+            //remove all the objects for the previous room
+            for(int i = 0; i < entrances.size(); i++) {
+                entrances.remove(i);
+            }
+            for(int i = 0; i < enemies.size(); i++) {
+                enemies.remove(i);
+            }
+            for(int i = 0; i < leon.getBullets().size(); i++) {
+                leon.getBullets().remove(i);
+            }
+            //add the elements for the new, current room
+            setBackground(Color.BLACK);
+            entrances.add(new Entrance(500,10, "room3"));
+            
         }
-        
-        
+    }
+    
+    public String getCurrentRoom() {
+        return currentRoom;
+    }
+    
+    public void setCurrentRoom(String room) {
+        currentRoom=room;
     }
     
     public class TAdapter extends KeyAdapter {

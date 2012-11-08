@@ -16,3 +16,10 @@ Problems: In Main...
 	Not recognizing room1 as the current class
 	Doesn't seem like the changeRoom boolean is being set properly 
 CURRENT STATE: Program produces the same output as previous with the addition of a door on the left of the screen
+
+11/7 11:41 PM
+Redesigned the project: Now uses only one Board class that repaints when Leon enters (intersects) a door.
+Added checkChangeRoom() method. This will eventually need to check all current rooms then remove the current objects from all ArrayLists (enemies, entrances, bullets, scenery) and then create new objects corresponding to the new room and finally add them to the appropriate arrays.
+CURRENT STATE: Program produces an inital grey screen with Leon, one zombie, and a door. Leon can shoot and move in all directions. The zombie is always moving on a constant horizontal plane for now. Now when Leon moves into the door, all the objects from the ArrayLists are removed and a new scene is painted with a black background and a door in a new location. This is the foundation for changing rooms.
+
+

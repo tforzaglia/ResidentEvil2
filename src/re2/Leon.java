@@ -104,7 +104,7 @@ public class Leon {
         bullets.add(new Bullet(x + LEON_SIZE/2, y + LEON_SIZE/2));
     }
     
-    //no change in the coordinates when noo keys are being pressed
+    //no change in the coordinates when no keys are being pressed
     public void keyReleased(KeyEvent keyEvent) {
         
         int key = keyEvent.getKeyCode();

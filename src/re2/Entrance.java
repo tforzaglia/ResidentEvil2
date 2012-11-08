@@ -1,6 +1,5 @@
 package re2;
 
-import Rooms.Board;
 import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
@@ -11,6 +10,8 @@ public class Entrance {
     private String leadsTo;
     private int x;
     private int y;
+    private int dx;
+    private int dy;
     private int width;
     private int height;
     private Image image;
@@ -46,4 +47,9 @@ public class Entrance {
         return leadsTo;
     }
     
+    public void move(int dx, int dy) {
+        
+        x=dx;
+        y=dy;
+    }
 }
