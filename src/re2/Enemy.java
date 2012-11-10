@@ -13,6 +13,7 @@ public class Enemy {
     private int height;
     private boolean visible;
     private Image image;
+    private String direction = "left";
     
     public Enemy(int x, int y) {
         
@@ -28,10 +29,41 @@ public class Enemy {
     //for now move the enemy back to the right if they go to far off the screen on the left
     public void move() {
         
-        if(x < 0) {
-            x = 1500;
+        if(direction.equals("left")) {
+            moveLeft();
         }
+        
+        else {
+            moveRight();
+        }
+        
+        if(x < 0) {
+            x = 0;
+            direction="right";
+        }
+        
+        if(x > 1450) {
+            x = 1450;
+            direction="left";
+        }
+        
+        if(y < 1) {
+            y = 1;
+        }
+        
+        if(y > 840) {
+            y = 840;
+        }
+        
+       // x -= 1;
+    }
+    
+    public void moveLeft() {
         x -= 1;
+    }
+    
+    public void moveRight() {
+        x += 1;
     }
     
     public int getX() {

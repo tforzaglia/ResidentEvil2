@@ -22,4 +22,12 @@ Redesigned the project: Now uses only one Board class that repaints when Leon en
 Added checkChangeRoom() method. This will eventually need to check all current rooms then remove the current objects from all ArrayLists (enemies, entrances, bullets, scenery) and then create new objects corresponding to the new room and finally add them to the appropriate arrays.
 CURRENT STATE: Program produces an inital grey screen with Leon, one zombie, and a door. Leon can shoot and move in all directions. The zombie is always moving on a constant horizontal plane for now. Now when Leon moves into the door, all the objects from the ArrayLists are removed and a new scene is painted with a black background and a door in a new location. This is the foundation for changing rooms.
 
+11/10 12:10 AM
+Added boundaries for Leon and enemies  so they cannot walk of the screen.
+Enemies now move all the way to the left of the screen and then move to the right when they reach the edge of the frame, so on and so forth. Still only hoirzontially
+Added SceneObject class for adding scenery -- Added fire to the first screen
+Implemented collison detection between Leon and the scenery in all directions. Leon cannot move into scenery.
+CURRENT STATE: Program produces an initial black screen with Leon, one zombie, a door, and fire to above and below Leon (placement for testing purposes now). Zombie moves horizontally left, and back to the right when it reaches x coordinate 0. Entry to new room works the same as it did in the previous commit.
+
+
 

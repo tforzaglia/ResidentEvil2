@@ -4,10 +4,9 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
-public class Entrance {
+public class SceneObject {
     
-    private String entrance = "door.png";
-    private String leadsTo;
+    private String sceneObject = "fire.png";
     private int x;
     private int y;
     private int dx;
@@ -16,15 +15,14 @@ public class Entrance {
     private int height;
     private Image image;
     
-    public Entrance(int x, int y, String leadsTo) {
+    public SceneObject(int x, int y) {
         
-        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(entrance));
+        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(sceneObject));
         image = imageIcon.getImage();
         width = image.getHeight(null);
         height = image.getHeight(null);
         this.x =x;
         this.y = y;
-        this.leadsTo = leadsTo;
     }
     
     public int getX() {
@@ -43,13 +41,9 @@ public class Entrance {
         return new Rectangle(x, y, width, height);
     }
     
-    public String getLeadsTo() {
-        return leadsTo;
-    }
-    
     public void move(int dx, int dy) {
         
-        x = dx;
-        y = dy;
+        x=dx;
+        y=dy;
     }
 }

@@ -21,6 +21,7 @@ public class Board extends JPanel implements ActionListener {
     private Leon leon;
     private ArrayList enemies;
     private ArrayList entrances;
+    private ArrayList scenery;
     private boolean ingame;
     private int B_WIDTH;
     private int B_HEIGHT;
@@ -30,13 +31,14 @@ public class Board extends JPanel implements ActionListener {
         
         addKeyListener(new TAdapter());
         setFocusable(true);
-        setBackground(Color.GRAY);
+        setBackground(Color.BLACK);
         setDoubleBuffered(true);
         
         ingame = true;
         leon = new Leon();
         initEnemies();
         initEntrances();
+        initScenery();
         
         timer = new Timer(5, this);
         timer.start();
@@ -53,14 +55,27 @@ public class Board extends JPanel implements ActionListener {
     public void initEnemies() {
          
         enemies = new ArrayList();
-        enemies.add(new Enemy(600,60));
+        enemies.add(new Enemy(600,90));
     }
     
     public void initEntrances() {
         
         setCurrentRoom("room1"); 
         entrances = new ArrayList();
-        entrances.add(new Entrance(300,10, "room2"));
+        entrances.add(new Entrance(400,700, "room2"));
+    }
+    
+    public void initScenery() {
+        
+        scenery = new ArrayList();
+        for(int i = 1; i < 1470; i = i + 77){
+            scenery.add(new SceneObject(i,1));
+            scenery.add(new SceneObject(i,42));
+        }
+        for(int i = 200; i < 500; i = i + 77){
+            scenery.add(new SceneObject(i,300));
+            scenery.add(new SceneObject(i,342));
+        }
     }
  
     /**
@@ -80,6 +95,11 @@ public class Board extends JPanel implements ActionListener {
             for (int i = 0; i < entrances.size(); i++) {
                 Entrance entrance = (Entrance)entrances.get(i);
                 graphics2d.drawImage(entrance.getImage(), entrance.getX(), entrance.getY(), this);  
+            }
+            
+            for (int i = 0; i < scenery.size(); i++) {
+                SceneObject sceneObject = (SceneObject)scenery.get(i);
+                graphics2d.drawImage(sceneObject.getImage(), sceneObject.getX(), sceneObject.getY(), this);  
             }
             
             //draw all of the bullets from the array list
@@ -156,9 +176,28 @@ public class Board extends JPanel implements ActionListener {
                 Entrance entrance = (Entrance) entrances.get(l);
                 Rectangle r5 = entrance.getBounds();
                 if(r3.intersects(r5)) {                 
-                    setCurrentRoom(entrance.getLeadsTo());//parameter needs to be variable -- entrance.getLeadsTo()
+                    setCurrentRoom(entrance.getLeadsTo());
                 }   
-            }
+        }
+        
+        for(int m = 0; m < scenery.size(); m++) {
+                SceneObject sceneObject = (SceneObject) scenery.get(m);
+                Rectangle r6 = sceneObject.getBounds();
+                if(r3.intersects(r6)) {
+                    if(leon.getDirection().equals("up")){
+                        leon.setY(leon.getY() + 1);
+                    }
+                    if(leon.getDirection().equals("down")){
+                        leon.setY(leon.getY() - 1);
+                    }
+                    if(leon.getDirection().equals("left")){
+                        leon.setX(leon.getX() + 1);
+                    }
+                    if(leon.getDirection().equals("right")){
+                        leon.setX(leon.getX() - 1);
+                    }
+                }   
+        }
 
         for(int j = 0; j < enemies.size(); j++) {
             Enemy enemy = (Enemy) enemies.get(j);
@@ -200,6 +239,7 @@ public class Board extends JPanel implements ActionListener {
     public void checkChangeRoom() {
          
         if(getCurrentRoom().equals("room2")) {
+            /**********ROOM 2****************/
             //remove all the objects for the previous room
             for(int i = 0; i < entrances.size(); i++) {
                 entrances.remove(i);
@@ -207,13 +247,15 @@ public class Board extends JPanel implements ActionListener {
             for(int i = 0; i < enemies.size(); i++) {
                 enemies.remove(i);
             }
+            for(int i = 0; i < scenery.size(); i++) {
+                scenery.remove(i);
+            }
             for(int i = 0; i < leon.getBullets().size(); i++) {
                 leon.getBullets().remove(i);
             }
             //add the elements for the new, current room
             setBackground(Color.BLACK);
-            entrances.add(new Entrance(500,10, "room3"));
-            
+            entrances.add(new Entrance(500,10, "room3"));  
         }
     }
     

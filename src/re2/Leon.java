@@ -25,6 +25,7 @@ public class Leon {
     
     private ArrayList bullets;
     private final int LEON_SIZE = 61;
+    private String direction="null";
     
     //constructor: set up the image and set the location
     public Leon() {
@@ -35,21 +36,34 @@ public class Leon {
         height = image.getHeight(null);
         bullets = new ArrayList();
         x = 40;
-        y = 60;
+        y = 85;
     }
     
     //changes the coordinates of the sprite
     public void move() {
         
-        x += dx;
-        y += dy;
+        if(direction == "right" || direction == "left"){
+            x += dx;
+        }
+        
+        if(direction == "up" || direction == "down"){
+            y += dy;
+        }
         
         if(x < 1) {
             x = 1;
         }
         
+        if(x > 1450) {
+            x = 1450;
+        }
+        
         if(y < 1) {
             y = 1;
+        }
+        
+        if(y > 840) {
+            y = 840;
         }
     }
     
@@ -59,6 +73,14 @@ public class Leon {
     
     public int getY() {      
         return y;
+    }
+    
+    public void setY(int y) {
+        this.y = y;
+    }
+    
+    public void setX(int x) {
+        this.x = x;
     }
     
     public Image getImage() {      
@@ -83,21 +105,29 @@ public class Leon {
             shoot();
         }
         
-        if(key == KeyEvent.VK_LEFT) {
+        else if(key == KeyEvent.VK_LEFT) {
             dx = -1;
+            direction="left";
         }
         
-        if(key == KeyEvent.VK_RIGHT) {
+        else if(key == KeyEvent.VK_RIGHT) {
             dx = 1;
+            direction="right";
         }
         
-        if(key == KeyEvent.VK_UP) {
+        else if(key == KeyEvent.VK_UP) {
             dy = -1;
+            direction="up";
         }
         
-        if(key == KeyEvent.VK_DOWN) {
+        else if(key == KeyEvent.VK_DOWN) {
             dy = 1;
+            direction="down";
         }
+    }
+    
+    public String getDirection() {
+        return direction;
     }
     
     public void shoot() {
