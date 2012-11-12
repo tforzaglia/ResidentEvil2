@@ -13,7 +13,7 @@ public class Bullet {
     private Image image;
     boolean visible;
     
-    private final int BOARD_WIDTH = 100000;
+    private final int BOARD_WIDTH = 1500;
     private final int MISSLE_SPEED = 2;
     
     public Bullet(int x, int y) {

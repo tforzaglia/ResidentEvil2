@@ -42,11 +42,11 @@ public class Leon {
     //changes the coordinates of the sprite
     public void move() {
         
-        if(direction == "right" || direction == "left"){
+        if(direction.equals("right") || direction.equals("left")){
             x += dx;
         }
         
-        if(direction == "up" || direction == "down"){
+        if(direction.equals("up") || direction.equals("down")){
             y += dy;
         }
         
@@ -106,22 +106,22 @@ public class Leon {
         }
         
         else if(key == KeyEvent.VK_LEFT) {
-            dx = -1;
+            dx = -2;
             direction="left";
         }
         
         else if(key == KeyEvent.VK_RIGHT) {
-            dx = 1;
+            dx = 2;
             direction="right";
         }
         
         else if(key == KeyEvent.VK_UP) {
-            dy = -1;
+            dy = -2;
             direction="up";
         }
         
         else if(key == KeyEvent.VK_DOWN) {
-            dy = 1;
+            dy = 2;
             direction="down";
         }
     }

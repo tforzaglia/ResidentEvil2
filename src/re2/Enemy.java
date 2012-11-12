@@ -13,7 +13,7 @@ public class Enemy {
     private int height;
     private boolean visible;
     private Image image;
-    private String direction = "left";
+    private String direction="null";
     
     public Enemy(int x, int y) {
         
@@ -26,25 +26,15 @@ public class Enemy {
         this.y = y;
     }
     
-    //for now move the enemy back to the right if they go to far off the screen on the left
+    //mov method just makes sure that the enemies stay on the screen
     public void move() {
-        
-        if(direction.equals("left")) {
-            moveLeft();
-        }
-        
-        else {
-            moveRight();
-        }
-        
+           
         if(x < 0) {
             x = 0;
-            direction="right";
         }
-        
+       
         if(x > 1450) {
             x = 1450;
-            direction="left";
         }
         
         if(y < 1) {
@@ -53,17 +43,31 @@ public class Enemy {
         
         if(y > 840) {
             y = 840;
-        }
-        
-       // x -= 1;
+        }     
     }
     
     public void moveLeft() {
         x -= 1;
+        direction = "left";
     }
     
     public void moveRight() {
         x += 1;
+        direction = "right";
+    }
+    
+    public void moveUp() {
+        y -= 1;
+        direction = "up";
+    }
+    
+    public void moveDown() {
+        y += 1;
+        direction = "down";
+    }
+    
+    public String getDirection() {
+        return direction;
     }
     
     public int getX() {
@@ -72,6 +76,14 @@ public class Enemy {
 
     public int getY() {
         return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public void setX(int x) {
+        this.x = x;
     }
 
     public boolean isVisible() {

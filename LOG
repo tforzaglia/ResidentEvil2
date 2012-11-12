@@ -29,5 +29,14 @@ Added SceneObject class for adding scenery -- Added fire to the first screen
 Implemented collison detection between Leon and the scenery in all directions. Leon cannot move into scenery.
 CURRENT STATE: Program produces an initial black screen with Leon, one zombie, a door, and fire to above and below Leon (placement for testing purposes now). Zombie moves horizontally left, and back to the right when it reaches x coordinate 0. Entry to new room works the same as it did in the previous commit.
 
+11/12
+Fixed bug where bullets could not be shot after entering a new room. Moved the remove bullet code to the check collision method (if Leon intersects with the door)
+Moved the code for removing all the elements making up a room to a new method for cleaner code and easier readability.
+Enemies now move in all directions towards Leon's current position.
+Implemented collision detection between enemies and the scenery.
+CURRENT STATE: Program produces an initial black screen with Leon, one zombie, a door, and fire above and below Leon (placement for testing purposes now). Zombie now moves in all directions towards Leon and is bound by the board and cannot pass through scenery. Entry to new room works the same as it did in the previous commit.
+
+
+
 
 

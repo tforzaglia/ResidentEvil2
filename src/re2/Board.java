@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class Board extends JPanel implements ActionListener {
-    
+
     private Timer timer;
     private Leon leon;
     private ArrayList enemies;
@@ -26,256 +26,294 @@ public class Board extends JPanel implements ActionListener {
     private int B_WIDTH;
     private int B_HEIGHT;
     private String currentRoom;
-    
+
     public Board() {
-        
+
         addKeyListener(new TAdapter());
         setFocusable(true);
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
-        
+
         ingame = true;
         leon = new Leon();
         initEnemies();
         initEntrances();
         initScenery();
-        
-        timer = new Timer(5, this);
+
+        timer = new Timer(7, this);
         timer.start();
     }
-    
+
     @Override
     public void addNotify() {
-        
+
         super.addNotify();
         B_WIDTH = getWidth();
         B_HEIGHT = getHeight();
     }
 
     public void initEnemies() {
-         
+
         enemies = new ArrayList();
-        enemies.add(new Enemy(600,90));
+        enemies.add(new Enemy(600, 90));
     }
-    
+
     public void initEntrances() {
-        
-        setCurrentRoom("room1"); 
+
+        setCurrentRoom("room1");
         entrances = new ArrayList();
-        entrances.add(new Entrance(400,700, "room2"));
+        entrances.add(new Entrance(400, 700, "room2"));
     }
-    
+
     public void initScenery() {
-        
+
         scenery = new ArrayList();
-        for(int i = 1; i < 1470; i = i + 77){
-            scenery.add(new SceneObject(i,1));
-            scenery.add(new SceneObject(i,42));
+        for (int i = 1; i < 1470; i = i + 77) {
+            scenery.add(new SceneObject(i, 1));
+            scenery.add(new SceneObject(i, 42));
         }
-        for(int i = 200; i < 500; i = i + 77){
-            scenery.add(new SceneObject(i,300));
-            scenery.add(new SceneObject(i,342));
+        //testing collision detection
+        for (int i = 200; i < 500; i = i + 77) {
+            scenery.add(new SceneObject(i, 300));
+            scenery.add(new SceneObject(i, 342));
         }
     }
- 
+
     /**
      *
      * @param graphics
      */
     @Override
     public void paint(Graphics graphics) {
-        
+
         super.paint(graphics);
 
-        if(ingame) { 
-            
+        if (ingame) {
+
             Graphics2D graphics2d = (Graphics2D) graphics;
             ArrayList clip = leon.getBullets();
 
             for (int i = 0; i < entrances.size(); i++) {
-                Entrance entrance = (Entrance)entrances.get(i);
-                graphics2d.drawImage(entrance.getImage(), entrance.getX(), entrance.getY(), this);  
+                Entrance entrance = (Entrance) entrances.get(i);
+                graphics2d.drawImage(entrance.getImage(), entrance.getX(), entrance.getY(), this);
             }
-            
+
             for (int i = 0; i < scenery.size(); i++) {
-                SceneObject sceneObject = (SceneObject)scenery.get(i);
-                graphics2d.drawImage(sceneObject.getImage(), sceneObject.getX(), sceneObject.getY(), this);  
+                SceneObject sceneObject = (SceneObject) scenery.get(i);
+                graphics2d.drawImage(sceneObject.getImage(), sceneObject.getX(), sceneObject.getY(), this);
             }
-            
+
             //draw all of the bullets from the array list
             for (int i = 0; i < clip.size(); i++) {
                 Bullet bullet = (Bullet) clip.get(i);
                 graphics2d.drawImage(bullet.getImage(), bullet.getX(), bullet.getY(), this);
             }
-            
+
             graphics2d.drawImage(leon.getImage(), leon.getX(), leon.getY(), this);
-            
-            //draw all enemies from the array (have position set in each enemy object)
+
+            //draw all enemies from the array
             for (int i = 0; i < enemies.size(); i++) {
-                Enemy enemy = (Enemy)enemies.get(i);
-                if(enemy.isVisible()) {
+                Enemy enemy = (Enemy) enemies.get(i);
+                if (enemy.isVisible()) {
                     graphics2d.drawImage(enemy.getImage(), enemy.getX(), enemy.getY(), this);
                 }
-            }      
-        }
-        else {
+            }
+        } else {
             String message = "YOU ARE DEAD";
             Font font = new Font("Helvetica", Font.BOLD, 30);
             FontMetrics metrics = this.getFontMetrics(font);
-            
+
             graphics.setColor(Color.red);
             graphics.setFont(font);
             graphics.drawString(message, (B_WIDTH = metrics.stringWidth(message)) / 2, B_HEIGHT / 2);
         }
-        
+
         Toolkit.getDefaultToolkit().sync();
         graphics.dispose();
     }
-    
+
     /**
      *
-     * @param actionEvent
-     * called every 5ms -- move the sprite and repaint the board
+     * @param actionEvent called every 5ms -- move the sprite and repaint the
+     * board
      */
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        
+
         ArrayList clip = leon.getBullets();
-        
-        for( int i = 0; i < clip.size(); i++) {
+
+        for (int i = 0; i < clip.size(); i++) {
             Bullet bullet = (Bullet) clip.get(i);
-            if(bullet.isVisible()) {
+            if (bullet.isVisible()) {
                 bullet.move();
-            }
-            else {
+            } else {
                 clip.remove(i);
             }
         }
-        
-        for( int i = 0; i < enemies.size(); i++) {
+
+        for (int i = 0; i < enemies.size(); i++) {
             Enemy enemy = (Enemy) enemies.get(i);
-            if(enemy.isVisible()) {
+            if (enemy.isVisible()) {
                 enemy.move();
-            }
-            else {
+                if(enemy.getX() > leon.getX()) {
+                    enemy.moveLeft();
+                }
+                if(enemy.getX() < leon.getX()) {
+                    enemy.moveRight();
+                }
+                if(enemy.getY() < leon.getY()) {
+                    enemy.moveDown();
+                }
+                if(enemy.getY() > leon.getY()) {
+                    enemy.moveUp();
+                }
+            } else {
                 enemies.remove(i);
             }
         }
-        
+
         leon.move();
         checkCollisions();
         System.out.println("DEBUG :" + getCurrentRoom());
         checkChangeRoom();
         repaint();
     }
-    
+
     public void checkCollisions() {
-        
+
         Rectangle r3 = leon.getBounds();
-        for(int l = 0; l < entrances.size(); l++) {
-                Entrance entrance = (Entrance) entrances.get(l);
-                Rectangle r5 = entrance.getBounds();
-                if(r3.intersects(r5)) {                 
-                    setCurrentRoom(entrance.getLeadsTo());
+        for (int l = 0; l < entrances.size(); l++) {
+            Entrance entrance = (Entrance) entrances.get(l);
+            Rectangle r5 = entrance.getBounds();
+            if (r3.intersects(r5)) {
+                setCurrentRoom(entrance.getLeadsTo());
+                for (int i = 0; i < leon.getBullets().size(); i++) {
+                    Bullet bullet = (Bullet) leon.getBullets().get(i);
+                    bullet.setVisible(false);
                 }   
-        }
-        
-        for(int m = 0; m < scenery.size(); m++) {
-                SceneObject sceneObject = (SceneObject) scenery.get(m);
-                Rectangle r6 = sceneObject.getBounds();
-                if(r3.intersects(r6)) {
-                    if(leon.getDirection().equals("up")){
-                        leon.setY(leon.getY() + 1);
-                    }
-                    if(leon.getDirection().equals("down")){
-                        leon.setY(leon.getY() - 1);
-                    }
-                    if(leon.getDirection().equals("left")){
-                        leon.setX(leon.getX() + 1);
-                    }
-                    if(leon.getDirection().equals("right")){
-                        leon.setX(leon.getX() - 1);
-                    }
-                }   
+            }
         }
 
-        for(int j = 0; j < enemies.size(); j++) {
-            Enemy enemy = (Enemy) enemies.get(j);
-            Rectangle r2 = enemy.getBounds();
-            
-            //got attacked -- subtract from Leon's health and move him back a few steps
-            if(r3.intersects(r2)) {
-                //health--
-                //if health != 0
-                    //move leon backwards a bit
-                //else (health == 0)
-                    //ingame = false (game over)
-                //System.out.println("DEBUG : ATTCKED!");
+        for (int m = 0; m < scenery.size(); m++) {
+            SceneObject sceneObject = (SceneObject) scenery.get(m);
+            Rectangle r6 = sceneObject.getBounds();
+            if(r3.intersects(r6)) {
+                if (leon.getDirection().equals("up")) {
+                    leon.setY(leon.getY() + 1);
+                }
+                if (leon.getDirection().equals("down")) {
+                    leon.setY(leon.getY() - 1);
+                }
+                if (leon.getDirection().equals("left")) {
+                    leon.setX(leon.getX() + 1);
+                }
+                if (leon.getDirection().equals("right")) {
+                    leon.setX(leon.getX() - 1);
+                }
             }
             
+            for (int j = 0; j < enemies.size(); j++) {
+                Enemy enemy = (Enemy) enemies.get(j);
+                Rectangle r2 = enemy.getBounds();
+                if (r2.intersects(r6)) {
+                    if (enemy.getDirection().equals("up")) {
+                        enemy.setY(enemy.getY() + 1);
+                    }
+                    if (enemy.getDirection().equals("down")) {
+                        enemy.setY(enemy.getY() - 1);
+                    }
+                    if (enemy.getDirection().equals("left")) {
+                        enemy.setX(enemy.getX() + 1);
+                    }
+                    if (enemy.getDirection().equals("right")) {
+                        enemy.setX(enemy.getX() - 1);
+                    }
+                }
+
+            }
+        }
+
+        for (int j = 0; j < enemies.size(); j++) {
+            Enemy enemy = (Enemy) enemies.get(j);
+            Rectangle r2 = enemy.getBounds();
+
+            //got attacked -- subtract from Leon's health and move him back a few steps
+            if (r3.intersects(r2)) {
+                //health--
+                //if health != 0
+                //move leon backwards a bit
+                //else (health == 0)
+                //ingame = false (game over)
+                //System.out.println("DEBUG : ATTCKED!");
+            }
+
             ArrayList clip = leon.getBullets();
-            
-            for(int i = 0; i < clip.size(); i++) {
-                Bullet bullet = (Bullet)clip.get(i);
-                
+
+            for (int i = 0; i < clip.size(); i++) {
+                Bullet bullet = (Bullet) clip.get(i);
+
                 Rectangle r1 = bullet.getBounds();
-                
-                for(int k = 0; k < enemies.size(); k++) {
-                    Enemy enemy1 = (Enemy)enemies.get(k);
+
+                for (int k = 0; k < enemies.size(); k++) {
+                    Enemy enemy1 = (Enemy) enemies.get(k);
                     Rectangle r4 = enemy1.getBounds();
-                    
+
                     //bullet hit and enemy
-                    if(r1.intersects(r4)) {
+                    if (r1.intersects(r4)) {
                         bullet.setVisible(false);
                         //if enemy health == 0
                         enemy.setVisible(false);
                         //else maybe make the enemy flash or move back                        
                     }
                 }
-            }   
-        }  
+            }
+        }
     }
-    
+
+    //remove the old objects and add new ones based on the current room
     public void checkChangeRoom() {
-         
-        if(getCurrentRoom().equals("room2")) {
-            /**********ROOM 2****************/
-            //remove all the objects for the previous room
-            for(int i = 0; i < entrances.size(); i++) {
-                entrances.remove(i);
-            }
-            for(int i = 0; i < enemies.size(); i++) {
-                enemies.remove(i);
-            }
-            for(int i = 0; i < scenery.size(); i++) {
-                scenery.remove(i);
-            }
-            for(int i = 0; i < leon.getBullets().size(); i++) {
-                leon.getBullets().remove(i);
-            }
+
+        if (getCurrentRoom().equals("room2")) {
+             /*********ROOM 2***************/
+            removeElements();
             //add the elements for the new, current room
             setBackground(Color.BLACK);
-            entrances.add(new Entrance(500,10, "room3"));  
+            entrances.add(new Entrance(500, 10, "room3"));
+        }
+    }
+
+    //remove all the old objects--called when Leon enters a new room
+    public void removeElements() {
+
+        //remove all the objects for the previous room
+        for (int i = 0; i < entrances.size(); i++) {
+            entrances.remove(i);
+        }
+        for (int i = 0; i < enemies.size(); i++) {
+            enemies.remove(i);
+        }
+        for (int i = 0; i < scenery.size(); i++) {
+            scenery.remove(i);
         }
     }
     
     public String getCurrentRoom() {
         return currentRoom;
-    }
-    
+    }   
+
     public void setCurrentRoom(String room) {
-        currentRoom=room;
+        currentRoom = room;
     }
-    
+
     public class TAdapter extends KeyAdapter {
-        
+
         @Override
-        public void keyReleased(KeyEvent keyEvent) {  
+        public void keyReleased(KeyEvent keyEvent) {
             leon.keyReleased(keyEvent);
         }
-        
+
         @Override
-        public void keyPressed(KeyEvent keyEvent) {         
+        public void keyPressed(KeyEvent keyEvent) {
             leon.keyPressed(keyEvent);
         }
     }
