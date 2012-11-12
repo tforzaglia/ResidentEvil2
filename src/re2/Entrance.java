@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
 public class Entrance {
-    
+
     private String entrance = "door.png";
     private String leadsTo;
     private int x;
@@ -15,18 +15,18 @@ public class Entrance {
     private int width;
     private int height;
     private Image image;
-    
+
     public Entrance(int x, int y, String leadsTo) {
-        
+
         ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(entrance));
         image = imageIcon.getImage();
         width = image.getHeight(null);
         height = image.getHeight(null);
-        this.x =x;
+        this.x = x;
         this.y = y;
         this.leadsTo = leadsTo;
     }
-    
+
     public int getX() {
         return x;
     }
@@ -34,7 +34,7 @@ public class Entrance {
     public int getY() {
         return y;
     }
-    
+
     public Image getImage() {
         return image;
     }
@@ -42,13 +42,13 @@ public class Entrance {
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
     }
-    
+
     public String getLeadsTo() {
         return leadsTo;
     }
-    
+
     public void move(int dx, int dy) {
-        
+
         x = dx;
         y = dy;
     }

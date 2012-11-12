@@ -134,7 +134,7 @@ public class Board extends JPanel implements ActionListener {
 
     /**
      *
-     * @param actionEvent called every 5ms -- move the sprite and repaint the
+     * @param actionEvent called every 7ms -- move the sprite and repaint the
      * board
      */
     @Override
@@ -155,16 +155,16 @@ public class Board extends JPanel implements ActionListener {
             Enemy enemy = (Enemy) enemies.get(i);
             if (enemy.isVisible()) {
                 enemy.move();
-                if(enemy.getX() > leon.getX()) {
+                if (enemy.getX() > leon.getX()) {
                     enemy.moveLeft();
                 }
-                if(enemy.getX() < leon.getX()) {
+                if (enemy.getX() < leon.getX()) {
                     enemy.moveRight();
                 }
-                if(enemy.getY() < leon.getY()) {
+                if (enemy.getY() < leon.getY()) {
                     enemy.moveDown();
                 }
-                if(enemy.getY() > leon.getY()) {
+                if (enemy.getY() > leon.getY()) {
                     enemy.moveUp();
                 }
             } else {
@@ -190,14 +190,14 @@ public class Board extends JPanel implements ActionListener {
                 for (int i = 0; i < leon.getBullets().size(); i++) {
                     Bullet bullet = (Bullet) leon.getBullets().get(i);
                     bullet.setVisible(false);
-                }   
+                }
             }
         }
 
         for (int m = 0; m < scenery.size(); m++) {
             SceneObject sceneObject = (SceneObject) scenery.get(m);
             Rectangle r6 = sceneObject.getBounds();
-            if(r3.intersects(r6)) {
+            if (r3.intersects(r6)) {
                 if (leon.getDirection().equals("up")) {
                     leon.setY(leon.getY() + 1);
                 }
@@ -211,7 +211,7 @@ public class Board extends JPanel implements ActionListener {
                     leon.setX(leon.getX() - 1);
                 }
             }
-            
+
             for (int j = 0; j < enemies.size(); j++) {
                 Enemy enemy = (Enemy) enemies.get(j);
                 Rectangle r2 = enemy.getBounds();
@@ -274,7 +274,6 @@ public class Board extends JPanel implements ActionListener {
     public void checkChangeRoom() {
 
         if (getCurrentRoom().equals("room2")) {
-             /*********ROOM 2***************/
             removeElements();
             //add the elements for the new, current room
             setBackground(Color.BLACK);
@@ -296,10 +295,10 @@ public class Board extends JPanel implements ActionListener {
             scenery.remove(i);
         }
     }
-    
+
     public String getCurrentRoom() {
         return currentRoom;
-    }   
+    }
 
     public void setCurrentRoom(String room) {
         currentRoom = room;

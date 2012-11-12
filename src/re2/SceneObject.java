@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 
 public class SceneObject {
-    
+
     private String sceneObject = "fire.png";
     private int x;
     private int y;
@@ -14,17 +14,17 @@ public class SceneObject {
     private int width;
     private int height;
     private Image image;
-    
+
     public SceneObject(int x, int y) {
-        
+
         ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(sceneObject));
         image = imageIcon.getImage();
         width = image.getHeight(null);
         height = image.getHeight(null);
-        this.x =x;
+        this.x = x;
         this.y = y;
     }
-    
+
     public int getX() {
         return x;
     }
@@ -32,7 +32,7 @@ public class SceneObject {
     public int getY() {
         return y;
     }
-    
+
     public Image getImage() {
         return image;
     }
@@ -40,10 +40,10 @@ public class SceneObject {
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
     }
-    
+
     public void move(int dx, int dy) {
-        
-        x=dx;
-        y=dy;
+
+        x = dx;
+        y = dy;
     }
 }
