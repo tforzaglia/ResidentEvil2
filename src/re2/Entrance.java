@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 public class Entrance {
 
-    private String entrance = "door.png";
+    private String entrance = "images/door.png";
     private String leadsTo;
     private int x;
     private int y;

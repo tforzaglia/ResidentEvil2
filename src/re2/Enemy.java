@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 public class Enemy {
 
-    private String enemy = "zombie.png";
+    private String enemy = "images/zombie.png";
     private int x;
     private int y;
     private int width;
@@ -29,19 +29,19 @@ public class Enemy {
     //move method just makes sure that the enemies stay on the screen
     public void move() {
 
-        if (x < 0) {
+        if(x < 0) {
             x = 0;
         }
 
-        if (x > 1450) {
+        if(x > 1450) {
             x = 1450;
         }
 
-        if (y < 1) {
+        if(y < 1) {
             y = 1;
         }
 
-        if (y > 840) {
+        if(y > 840) {
             y = 840;
         }
     }
@@ -101,4 +101,9 @@ public class Enemy {
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
     }
+    
+  /*  public void stop() {
+        x = 0;
+        y = 0;
+    }*/
 }

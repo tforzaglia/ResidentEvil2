@@ -32,9 +32,16 @@ CURRENT STATE: Program produces an initial black screen with Leon, one zombie, a
 11/12
 Fixed bug where bullets could not be shot after entering a new room. Moved the remove bullet code to the check collision method (if Leon intersects with the door)
 Moved the code for removing all the elements making up a room to a new method for cleaner code and easier readability.
-Enemies now move in all directions towards Leon's current position.
+Enemies now move in all directions towards Leon's current position. Can move diaganol as well.
 Implemented collision detection between enemies and the scenery.
+Slowed down the game speed to update every 7ms instead of 5ms.
+Increased Leon's speed. Each keystroke increases change in position by 2. Zombie is still at 1.
 CURRENT STATE: Program produces an initial black screen with Leon, one zombie, a door, and fire above and below Leon (placement for testing purposes now). Zombie now moves in all directions towards Leon and is bound by the board and cannot pass through scenery. Entry to new room works the same as it did in the previous commit.
+
+12/2 12:47 AM
+Back after taking a break to work on Akamai Live Stats project for MLB
+Moved the images into a seperate folder and updated paths in the code
+Implemented pause feature which stops all enemy movement and disables movement of Leon. For now, press ENTER to pause and SHIFT to resume the game.
 
 
 

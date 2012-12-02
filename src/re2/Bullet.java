@@ -17,7 +17,7 @@ public class Bullet {
 
     public Bullet(int x, int y) {
 
-        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("bullet.png"));
+        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("images/bullet.png"));
         image = imageIcon.getImage();
         visible = true;
         width = image.getWidth(null);

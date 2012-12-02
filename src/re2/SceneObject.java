@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
 
 public class SceneObject {
 
-    private String sceneObject = "fire.png";
+    private String sceneObject = "images/fire.png";
     private int x;
     private int y;
     private int dx;
