@@ -101,9 +101,4 @@ public class Enemy {
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
     }
-    
-  /*  public void stop() {
-        x = 0;
-        y = 0;
-    }*/
 }

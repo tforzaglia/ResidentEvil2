@@ -114,11 +114,6 @@ public class Leon {
     public void setResumed() {
         gamePaused = false;
     }
-    
-    public void stop() {
-        dx = 0;
-        dy = 0;
-    }
 
     //change the coordinates of Leon when the arrow keys are pressed
     public void keyPressed(KeyEvent keyEvent) {
@@ -169,8 +164,6 @@ public class Leon {
 
         if (key == KeyEvent.VK_DOWN) {
             dy = 0;
-        }
-        
-        
+        } 
     }
 }

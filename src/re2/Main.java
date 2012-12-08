@@ -10,7 +10,7 @@ public class Main extends JFrame {
 
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(board);
+        frame.add(board);
         frame.setSize(1500, 900);
         frame.setLocationRelativeTo(null);
         frame.setTitle("Resident Evil 2");

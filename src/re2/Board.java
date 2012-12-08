@@ -22,7 +22,10 @@ public class Board extends JPanel implements ActionListener {
     private ArrayList enemies;
     private ArrayList entrances;
     private ArrayList scenery;
+    private ArrayList items;
+    private ArrayList inventory;
     private boolean ingame;
+    private boolean paused;
     private int B_WIDTH;
     private int B_HEIGHT;
     private String currentRoom;
@@ -35,10 +38,12 @@ public class Board extends JPanel implements ActionListener {
         setDoubleBuffered(true);
 
         ingame = true;
+        paused = false;
         leon = new Leon();
         initEnemies();
         initEntrances();
         initScenery();
+        initItems();
 
         timer = new Timer(7, this);
         timer.start();
@@ -78,6 +83,13 @@ public class Board extends JPanel implements ActionListener {
             scenery.add(new SceneObject(i, 342));
         }
     }
+    
+    public void initItems() {
+
+        items = new ArrayList();
+        items.add(new Item(40, 300, "handgun", "weapon", "images/handgun.png"));
+        inventory = new ArrayList<Item>();
+    }
 
     /**
      *
@@ -94,22 +106,33 @@ public class Board extends JPanel implements ActionListener {
             Graphics2D graphics2d = (Graphics2D) graphics;
             ArrayList clip = leon.getBullets();
 
+            //Draw all of the doors/entrances
             for(int i = 0; i < entrances.size(); i++) {
                 Entrance entrance = (Entrance) entrances.get(i);
                 graphics2d.drawImage(entrance.getImage(), entrance.getX(), entrance.getY(), this);
             }
 
+            //draw all of the scenery objects
             for(int i = 0; i < scenery.size(); i++) {
                 SceneObject sceneObject = (SceneObject) scenery.get(i);
                 graphics2d.drawImage(sceneObject.getImage(), sceneObject.getX(), sceneObject.getY(), this);
             }
 
-            //draw all of the bullets from the array list
+            //draw all of the bullets
             for(int i = 0; i < clip.size(); i++) {
                 Bullet bullet = (Bullet) clip.get(i);
                 graphics2d.drawImage(bullet.getImage(), bullet.getX(), bullet.getY(), this);
             }
 
+            //draw all of the items
+            for(int i = 0; i < items.size(); i++) {
+                Item item = (Item) items.get(i);
+                if(item.isVisible()) {
+                    graphics2d.drawImage(item.getImage(), item.getX(), item.getY(), this);
+                }
+            }
+            
+            //draw Leon
             graphics2d.drawImage(leon.getImage(), leon.getX(), leon.getY(), this);
 
             //draw all enemies from the array
@@ -120,10 +143,7 @@ public class Board extends JPanel implements ActionListener {
                 }
             }
         } else {
-            checkPause();
-            
-            //add inventory screen here
-            
+
             //if Leon's health == 0 display the game over screen below and disbale resume
             /*
             String message = "YOU ARE DEAD";
@@ -160,7 +180,7 @@ public class Board extends JPanel implements ActionListener {
         }
 
         //move the enemies based on Leon's position
-        if(ingame) {
+        if(!paused) {
             for(int i = 0; i < enemies.size(); i++) {
                 Enemy enemy = (Enemy) enemies.get(i);
                 if(enemy.isVisible()) {
@@ -192,23 +212,26 @@ public class Board extends JPanel implements ActionListener {
 
     public void checkCollisions() {
 
-        Rectangle r3 = leon.getBounds();
-        for(int l = 0; l < entrances.size(); l++) {
-            Entrance entrance = (Entrance) entrances.get(l);
-            Rectangle r5 = entrance.getBounds();
-            if(r3.intersects(r5)) {
+        Rectangle leonRect = leon.getBounds();
+        
+        //collision detection between Leon and the entrances
+        for(int i = 0; i < entrances.size(); i++) {
+            Entrance entrance = (Entrance) entrances.get(i);
+            Rectangle entranceRect = entrance.getBounds();
+            if(leonRect.intersects(entranceRect)) {
                 setCurrentRoom(entrance.getLeadsTo());
-                for(int i = 0; i < leon.getBullets().size(); i++) {
-                    Bullet bullet = (Bullet) leon.getBullets().get(i);
+                for(int j = 0; j < leon.getBullets().size(); j++) {
+                    Bullet bullet = (Bullet) leon.getBullets().get(j);
                     bullet.setVisible(false);
                 }
             }
         }
 
-        for(int m = 0; m < scenery.size(); m++) {
-            SceneObject sceneObject = (SceneObject) scenery.get(m);
-            Rectangle r6 = sceneObject.getBounds();
-            if(r3.intersects(r6)) {
+        //collision detection scenery and Leon
+        for(int i = 0; i < scenery.size(); i++) {
+            SceneObject sceneObject = (SceneObject) scenery.get(i);
+            Rectangle sceneryRect = sceneObject.getBounds();
+            if(leonRect.intersects(sceneryRect)) {
                 if(leon.getDirection().equals("up")) {
                     leon.setY(leon.getY() + 1);
                 }
@@ -222,11 +245,12 @@ public class Board extends JPanel implements ActionListener {
                     leon.setX(leon.getX() - 1);
                 }
             }
-
+            
+            //collision detection scenery and enemies
             for(int j = 0; j < enemies.size(); j++) {
                 Enemy enemy = (Enemy) enemies.get(j);
-                Rectangle r2 = enemy.getBounds();
-                if(r2.intersects(r6)) {
+                Rectangle enemyRect = enemy.getBounds();
+                if(enemyRect.intersects(sceneryRect)) {
                     if(enemy.getDirection().equals("up")) {
                         enemy.setY(enemy.getY() + 1);
                     }
@@ -240,16 +264,26 @@ public class Board extends JPanel implements ActionListener {
                         enemy.setX(enemy.getX() - 1);
                     }
                 }
-
+            }
+        }
+        
+        //collision detection between Leon and items
+        for(int i = 0; i < items.size(); i++) {
+            Item item = (Item) items.get(i);
+            Rectangle itemRect = item.getBounds();
+            if(leonRect.intersects(itemRect)) {
+                item.setVisible(false);
+                inventory.add(item);
             }
         }
 
-        for(int j = 0; j < enemies.size(); j++) {
-            Enemy enemy = (Enemy) enemies.get(j);
-            Rectangle r2 = enemy.getBounds();
+        //collision detection between enemies and Leon
+        for(int i = 0; i < enemies.size(); i++) {
+            Enemy enemy = (Enemy) enemies.get(i);
+            Rectangle enemyRect = enemy.getBounds();
 
             //got attacked -- subtract from Leon's health and move him back a few steps
-            if (r3.intersects(r2)) {
+            if (leonRect.intersects(enemyRect)) {
                 //health--
                 //if health != 0
                 //move leon backwards a bit
@@ -257,25 +291,25 @@ public class Board extends JPanel implements ActionListener {
                 //ingame = false (game over)
                 //System.out.println("DEBUG : ATTCKED!");
             }
+        } 
 
-            ArrayList clip = leon.getBullets();
+        ArrayList clip = leon.getBullets();
 
-            for(int i = 0; i < clip.size(); i++) {
-                Bullet bullet = (Bullet) clip.get(i);
+        //collision detection between enemies and bullets
+        for(int i = 0; i < clip.size(); i++) {
+            Bullet bullet = (Bullet) clip.get(i);
+            Rectangle bulletRect = bullet.getBounds();
 
-                Rectangle r1 = bullet.getBounds();
+            for(int j = 0; j < enemies.size(); j++) {
+                Enemy enemy = (Enemy) enemies.get(j);
+                Rectangle enemyRect = enemy.getBounds();
 
-                for(int k = 0; k < enemies.size(); k++) {
-                    Enemy enemy1 = (Enemy) enemies.get(k);
-                    Rectangle r4 = enemy1.getBounds();
-
-                    //bullet hit and enemy
-                    if(r1.intersects(r4)) {
-                        bullet.setVisible(false);
-                        //if enemy health == 0
-                        enemy.setVisible(false);
-                        //else maybe make the enemy flash or move back                        
-                    }
+                //bullet hit an enemy
+                if(bulletRect.intersects(enemyRect)) {
+                    bullet.setVisible(false);
+                    //if enemy health == 0
+                    enemy.setVisible(false);
+                    //else maybe make the enemy flash or move back                        
                 }
             }
         }
@@ -317,10 +351,10 @@ public class Board extends JPanel implements ActionListener {
     
     public void checkPause() {
         if(leon.isPaused()) {
-            ingame = false;
+            paused = true;
         }
         else {
-            ingame = true;
+            paused = false;
         }
     }
 

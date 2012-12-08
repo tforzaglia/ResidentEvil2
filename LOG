@@ -43,6 +43,11 @@ Back after taking a break to work on Akamai Live Stats project for MLB
 Moved the images into a seperate folder and updated paths in the code
 Implemented pause feature which stops all enemy movement and disables movement of Leon. For now, press ENTER to pause and SHIFT to resume the game.
 
+12/
+Changed pausing logic to use a new boolean called 'paused'. Old ingame boolean variable will be used if the player dies (to be implemented later).
+Created item class for items which Leon can pick up
+Added collision detection between Leon and items -- when Leon walks over an item, the item disappears and is added to an inventory array (this will need to be displayed visually)
+	-----may want to consider having Item as a super class with subclasses for weapons, healing items, key items, ammo, etc
 
 
 
