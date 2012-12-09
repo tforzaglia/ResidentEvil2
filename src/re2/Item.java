@@ -7,6 +7,7 @@ import javax.swing.ImageIcon;
 public class Item {
     
     private String name;
+    private String type;
     private Image image;
     private int x;
     private int y;
@@ -16,7 +17,7 @@ public class Item {
     private int height;
     private boolean visible;
     
-    public Item(int x, int y, String name, String itemFile) {
+    public Item(int x, int y, String name, String type, String itemFile) {
 
         ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(itemFile));
         image = imageIcon.getImage();
@@ -25,6 +26,7 @@ public class Item {
         this.x = x;
         this.y = y;
         this.name = name;
+        this.type = type;
         visible = true;
     }
     
@@ -38,6 +40,14 @@ public class Item {
 
     public Image getImage() {
         return image;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public String getType() {
+        return type;
     }
 
     public Rectangle getBounds() {

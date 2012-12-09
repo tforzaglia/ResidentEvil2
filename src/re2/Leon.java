@@ -1,10 +1,15 @@
 package re2;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class Leon {
 
@@ -114,6 +119,31 @@ public class Leon {
     public void setResumed() {
         gamePaused = false;
     }
+    
+    public ArrayList getInventory() {
+        return Board.getInventory();
+    }
+    
+    //bring up the inventory screen when the game is paused
+    public void showInventory() {
+
+        ArrayList<Item> inventory = getInventory();
+        JFrame inventoryWindow = new JFrame("Inventory");
+        JPanel infoPanel = new JPanel();
+        
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.setBackground(Color.WHITE);
+        
+        for(int i = 0; i < inventory.size(); i++) {
+            JLabel itemLabel = new JLabel(inventory.get(i).getName());
+            infoPanel.add(itemLabel);
+        }
+        
+        inventoryWindow.setContentPane(infoPanel);
+        inventoryWindow.setSize(700, 500);
+        inventoryWindow.setLocation(300, 500);
+        inventoryWindow.setVisible(true);
+    }
 
     //change the coordinates of Leon when the arrow keys are pressed
     public void keyPressed(KeyEvent keyEvent) {
@@ -122,6 +152,7 @@ public class Leon {
 
         if(key == KeyEvent.VK_ENTER) {
             setPaused();
+            showInventory();
         }
         
         if(key == KeyEvent.VK_SHIFT) {

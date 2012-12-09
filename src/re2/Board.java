@@ -23,7 +23,7 @@ public class Board extends JPanel implements ActionListener {
     private ArrayList entrances;
     private ArrayList scenery;
     private ArrayList items;
-    private ArrayList inventory;
+    private static ArrayList inventory;
     private boolean ingame;
     private boolean paused;
     private int B_WIDTH;
@@ -57,20 +57,20 @@ public class Board extends JPanel implements ActionListener {
         B_HEIGHT = getHeight();
     }
 
-    public void initEnemies() {
+    private void initEnemies() {
 
         enemies = new ArrayList();
         enemies.add(new Enemy(600, 90));
     }
 
-    public void initEntrances() {
+    private void initEntrances() {
 
         setCurrentRoom("room1");
         entrances = new ArrayList();
         entrances.add(new Entrance(400, 700, "room2"));
     }
 
-    public void initScenery() {
+    private void initScenery() {
 
         scenery = new ArrayList();
         for (int i = 1; i < 1470; i = i + 77) {
@@ -84,7 +84,7 @@ public class Board extends JPanel implements ActionListener {
         }
     }
     
-    public void initItems() {
+    private void initItems() {
 
         items = new ArrayList();
         items.add(new Item(40, 300, "handgun", "weapon", "images/handgun.png"));
@@ -201,7 +201,6 @@ public class Board extends JPanel implements ActionListener {
                     enemies.remove(i);
                 }
             }
-
             leon.move();
         }
         checkCollisions();
@@ -210,6 +209,7 @@ public class Board extends JPanel implements ActionListener {
         repaint();
     }
 
+    //method to act on collisions between various objects
     public void checkCollisions() {
 
         Rectangle leonRect = leon.getBounds();
@@ -274,6 +274,7 @@ public class Board extends JPanel implements ActionListener {
             if(leonRect.intersects(itemRect)) {
                 item.setVisible(false);
                 inventory.add(item);
+                items.remove(item);
             }
         }
 
@@ -339,23 +340,34 @@ public class Board extends JPanel implements ActionListener {
         for(int i = 0; i < scenery.size(); i++) {
             scenery.remove(i);
         }
+        for(int i = 0; i < items.size(); i++) {
+            items.remove(i);
+        }
     }
 
+    //return the room number the user is currently in
     public String getCurrentRoom() {
         return currentRoom;
     }
 
+    //set the current room -- used when Leon walks over amn entrance
     public void setCurrentRoom(String room) {
         currentRoom = room;
     }
     
+    //set the paused boolean based on key presses
     public void checkPause() {
+        
         if(leon.isPaused()) {
             paused = true;
         }
         else {
             paused = false;
         }
+    }
+    
+    public static ArrayList getInventory() {
+        return inventory;
     }
 
     public class TAdapter extends KeyAdapter {

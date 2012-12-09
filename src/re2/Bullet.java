@@ -53,7 +53,7 @@ public class Bullet {
     public void move() {
 
         x += MISSLE_SPEED;
-        if (x > BOARD_WIDTH) {
+        if(x > BOARD_WIDTH) {
             visible = false;
         }
     }
