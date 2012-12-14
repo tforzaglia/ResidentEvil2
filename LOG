@@ -52,4 +52,10 @@ Added collision detection between Leon and items -- when Leon walks over an item
 12/9 2:42 AM
 Inventory window pops up when the game is paused -- right now all it does is display the names of all collected items
 
+12/14 12:52 AM 
+Turned the Item class into a super class for all sub categories of items (weapons, ammo, healing, key, etc)
+Added the Weapon subclass -- with additional field, firepower
+Inventory window is automatically closed when the game is resumed
+
+
 

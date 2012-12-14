@@ -6,18 +6,18 @@ import javax.swing.ImageIcon;
 
 public class Item {
     
-    private String name;
-    private String type;
-    private Image image;
-    private int x;
-    private int y;
-    private int dx;
-    private int dy;
-    private int width;
-    private int height;
-    private boolean visible;
+    public String name;
+    public String type;
+    public Image image;
+    public int x;
+    public int y;
+    public int dx;
+    public int dy;
+    public int width;
+    public int height;
+    public boolean visible;
     
-    public Item(int x, int y, String name, String type, String itemFile) {
+    public Item(int x, int y, String name, String itemFile) {
 
         ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(itemFile));
         image = imageIcon.getImage();
@@ -26,7 +26,6 @@ public class Item {
         this.x = x;
         this.y = y;
         this.name = name;
-        this.type = type;
         visible = true;
     }
     

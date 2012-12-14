@@ -30,6 +30,7 @@ public class Leon {
     private final int LEON_SIZE = 61;
     private String direction = "null";
     private boolean gamePaused = false;
+    private JFrame inventoryWindow;
 
     //constructor: set up the image and set the location
     public Leon() {
@@ -128,7 +129,7 @@ public class Leon {
     public void showInventory() {
 
         ArrayList<Item> inventory = getInventory();
-        JFrame inventoryWindow = new JFrame("Inventory");
+        inventoryWindow = new JFrame("Inventory");
         JPanel infoPanel = new JPanel();
         
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
@@ -136,6 +137,8 @@ public class Leon {
         
         for(int i = 0; i < inventory.size(); i++) {
             JLabel itemLabel = new JLabel(inventory.get(i).getName());
+            itemLabel.setOpaque(true);
+            itemLabel.setBackground(Color.CYAN);
             infoPanel.add(itemLabel);
         }
         
@@ -156,6 +159,7 @@ public class Leon {
         }
         
         if(key == KeyEvent.VK_SHIFT) {
+            inventoryWindow.dispose();
             setResumed();
         }
         
