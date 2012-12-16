@@ -204,7 +204,7 @@ public class Board extends JPanel implements ActionListener {
             leon.move();
         }
         checkCollisions();
-        System.out.println("DEBUG :" + getCurrentRoom());
+        //System.out.println("DEBUG :" + getCurrentRoom());
         checkChangeRoom();
         repaint();
     }

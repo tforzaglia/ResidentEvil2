@@ -120,34 +120,13 @@ public class Leon {
     public void setResumed() {
         gamePaused = false;
     }
-    
-    public ArrayList getInventory() {
-        return Board.getInventory();
-    }
-    
-    //bring up the inventory screen when the game is paused
-    public void showInventory() {
 
-        ArrayList<Item> inventory = getInventory();
-        inventoryWindow = new JFrame("Inventory");
-        JPanel infoPanel = new JPanel();
-        
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        infoPanel.setBackground(Color.WHITE);
-        
-        for(int i = 0; i < inventory.size(); i++) {
-            JLabel itemLabel = new JLabel(inventory.get(i).getName());
-            itemLabel.setOpaque(true);
-            itemLabel.setBackground(Color.CYAN);
-            infoPanel.add(itemLabel);
-        }
-        
-        inventoryWindow.setContentPane(infoPanel);
-        inventoryWindow.setSize(700, 500);
-        inventoryWindow.setLocation(300, 500);
+    public void showInventory() {
+        Inventory inventory = new Inventory();
+        inventoryWindow = inventory.showInventory();
         inventoryWindow.setVisible(true);
     }
-
+    
     //change the coordinates of Leon when the arrow keys are pressed
     public void keyPressed(KeyEvent keyEvent) {
 
@@ -165,16 +144,20 @@ public class Leon {
         
         if(key == KeyEvent.VK_SPACE) {
             shoot();
-        } else if(key == KeyEvent.VK_LEFT) {
+        } 
+        else if(key == KeyEvent.VK_LEFT) {
             dx = -2;
             direction = "left";
-        } else if(key == KeyEvent.VK_RIGHT) {
+        } 
+        else if(key == KeyEvent.VK_RIGHT) {
             dx = 2;
             direction = "right";
-        } else if(key == KeyEvent.VK_UP) {
+        } 
+        else if(key == KeyEvent.VK_UP) {
             dy = -2;
             direction = "up";
-        } else if(key == KeyEvent.VK_DOWN) {
+        } 
+        else if(key == KeyEvent.VK_DOWN) {
             dy = 2;
             direction = "down";
         }

@@ -57,5 +57,7 @@ Turned the Item class into a super class for all sub categories of items (weapon
 Added the Weapon subclass -- with additional field, firepower
 Inventory window is automatically closed when the game is resumed
 
-
+12/16 1:01 AM
+Created an Inventory class to handle displaying the inventory screen which pops up when the game is paused
+Added a pop up menu to each item (JLabel) added to the inventory frame. For now, there are options for equipping and using items when the user right clicks on an item name in the inventory screen. Also, right now all clicking on 'equip' or 'use' does is write the selected option to system out.
 
