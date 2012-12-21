@@ -9,7 +9,7 @@ Added an enemy class. Right now its using a zombie as a picture. The Enemy class
 Added collision detection for the enemies and Leon as well as the bullets and the enemies
 CURRENT STATE: Program produces a black board with Leon and a zombie moving towards him. Leon can shoot bullets (unlimited for now). When a bullet makes contact with the zombie, it will disappear.
 
-11/5 6:30 AM
+11/5/2012 6:30 AM
 Added subclasses of the Board class for individual rooms. These subclasses will eventually have the scenery, enemy placement, and door placement specific to the room.
 Added an Entrance class and a picture of a door to go to new areas
 Problems: In Main...
@@ -17,19 +17,19 @@ Problems: In Main...
 	Doesn't seem like the changeRoom boolean is being set properly 
 CURRENT STATE: Program produces the same output as previous with the addition of a door on the left of the screen
 
-11/7 11:41 PM
+11/7/2012 11:41 PM
 Redesigned the project: Now uses only one Board class that repaints when Leon enters (intersects) a door.
 Added checkChangeRoom() method. This will eventually need to check all current rooms then remove the current objects from all ArrayLists (enemies, entrances, bullets, scenery) and then create new objects corresponding to the new room and finally add them to the appropriate arrays.
 CURRENT STATE: Program produces an inital grey screen with Leon, one zombie, and a door. Leon can shoot and move in all directions. The zombie is always moving on a constant horizontal plane for now. Now when Leon moves into the door, all the objects from the ArrayLists are removed and a new scene is painted with a black background and a door in a new location. This is the foundation for changing rooms.
 
-11/10 12:10 AM
+11/10/2012 12:10 AM
 Added boundaries for Leon and enemies  so they cannot walk of the screen.
 Enemies now move all the way to the left of the screen and then move to the right when they reach the edge of the frame, so on and so forth. Still only hoirzontially
 Added SceneObject class for adding scenery -- Added fire to the first screen
 Implemented collison detection between Leon and the scenery in all directions. Leon cannot move into scenery.
 CURRENT STATE: Program produces an initial black screen with Leon, one zombie, a door, and fire to above and below Leon (placement for testing purposes now). Zombie moves horizontally left, and back to the right when it reaches x coordinate 0. Entry to new room works the same as it did in the previous commit.
 
-11/12
+11/12/2012
 Fixed bug where bullets could not be shot after entering a new room. Moved the remove bullet code to the check collision method (if Leon intersects with the door)
 Moved the code for removing all the elements making up a room to a new method for cleaner code and easier readability.
 Enemies now move in all directions towards Leon's current position. Can move diaganol as well.
@@ -38,26 +38,29 @@ Slowed down the game speed to update every 7ms instead of 5ms.
 Increased Leon's speed. Each keystroke increases change in position by 2. Zombie is still at 1.
 CURRENT STATE: Program produces an initial black screen with Leon, one zombie, a door, and fire above and below Leon (placement for testing purposes now). Zombie now moves in all directions towards Leon and is bound by the board and cannot pass through scenery. Entry to new room works the same as it did in the previous commit.
 
-12/2 12:47 AM
+12/2/2012 12:47 AM
 Back after taking a break to work on Akamai Live Stats project for MLB
 Moved the images into a seperate folder and updated paths in the code
 Implemented pause feature which stops all enemy movement and disables movement of Leon. For now, press ENTER to pause and SHIFT to resume the game.
 
-12/8 1:30 AM
+12/8/2012 1:30 AM
 Changed pausing logic to use a new boolean called 'paused'. Old ingame boolean variable will be used if the player dies (to be implemented later).
 Created item class for items which Leon can pick up
 Added collision detection between Leon and items -- when Leon walks over an item, the item disappears and is added to an inventory array (this will need to be displayed visually)
 	-----may want to consider having Item as a super class with subclasses for weapons, healing items, key items, ammo, etc
 
-12/9 2:42 AM
+12/9/2012 2:42 AM
 Inventory window pops up when the game is paused -- right now all it does is display the names of all collected items
 
-12/14 12:52 AM 
+12/14/2012 12:52 AM 
 Turned the Item class into a super class for all sub categories of items (weapons, ammo, healing, key, etc)
 Added the Weapon subclass -- with additional field, firepower
 Inventory window is automatically closed when the game is resumed
 
-12/16 1:01 AM
+12/16/2012 1:01 AM
 Created an Inventory class to handle displaying the inventory screen which pops up when the game is paused
 Added a pop up menu to each item (JLabel) added to the inventory frame. For now, there are options for equipping and using items when the user right clicks on an item name in the inventory screen. Also, right now all clicking on 'equip' or 'use' does is write the selected option to system out.
 
+12/21/2012 2:59 AM
+Implemented the ability to equip different weapons by right clicking on the item name in the inventory menu, then selecting equip.
+Initialized the inventory with the 9mm handgun, already equipped when the game is started

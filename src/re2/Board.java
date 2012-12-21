@@ -24,6 +24,8 @@ public class Board extends JPanel implements ActionListener {
     private ArrayList scenery;
     private ArrayList items;
     private static ArrayList inventory;
+    private static ArrayList weapons;
+    private static ArrayList weaponNames;
     private boolean ingame;
     private boolean paused;
     private int B_WIDTH;
@@ -87,8 +89,16 @@ public class Board extends JPanel implements ActionListener {
     private void initItems() {
 
         items = new ArrayList();
-        items.add(new Weapon(40, 300, "9mm Handgun", "images/handgun.png", 1));
+        items.add(new Weapon(40, 300, "Shotgun", "images/handgun.png", 1));
         inventory = new ArrayList<Item>();
+        weapons = new ArrayList<Weapon>();
+        weaponNames = new ArrayList<String>();
+        
+        Weapon startGun = new Weapon(40, 300, "9mm Handgun", "images/handgun.png", 1);
+        startGun.equip();
+        inventory.add(startGun);
+        weapons.add(startGun);
+        weaponNames.add("9mm Handgun");
     }
 
     /**
@@ -274,6 +284,10 @@ public class Board extends JPanel implements ActionListener {
             if(leonRect.intersects(itemRect)) {
                 item.setVisible(false);
                 inventory.add(item);
+                if(item instanceof Weapon) {
+                    weapons.add(item);
+                    weaponNames.add(item.getName());
+                }
                 items.remove(item);
             }
         }
@@ -368,6 +382,14 @@ public class Board extends JPanel implements ActionListener {
     
     public static ArrayList getInventory() {
         return inventory;
+    }
+    
+    public static ArrayList getWeapons() {
+        return weapons;
+    }
+
+    public static ArrayList getWeaponNames() {
+        return weaponNames;
     }
 
     public class TAdapter extends KeyAdapter {

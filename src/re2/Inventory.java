@@ -1,22 +1,34 @@
 package re2;
 
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.BoxLayout;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.MenuElement;
 
 public class Inventory {
     private JFrame inventoryWindow;
-            
+   // private JPopupMenu popupMenu;
     
     public ArrayList getInventory() {
         return Board.getInventory();
+    }
+    
+    public ArrayList getWeapons() {
+        return Board.getWeapons();
+    }
+    
+    public ArrayList getWeaponNames() {
+        return Board.getWeaponNames();
     }
     
     public JFrame getFrame() {
@@ -39,7 +51,7 @@ public class Inventory {
         JPopupMenu popupMenu = new JPopupMenu("Items");
         ActionListener actionListener = new PopupActionListener();
         
-        //Add items for the pop up menu which
+        //Add items for the pop up menu which can be selected by right clicking on the item name
         JMenuItem equip = new JMenuItem("Equip");
         equip.addActionListener(actionListener);
         popupMenu.add(equip);
@@ -62,13 +74,47 @@ public class Inventory {
         
         return inventoryWindow;
     }
-
-}
-
-class PopupActionListener implements ActionListener {
+    
+    public Weapon getEquippedWeapon() {
         
-    @Override
-    public void actionPerformed(ActionEvent actionEvent) {
-        System.out.println("Selected: " + actionEvent.getActionCommand());
+        ArrayList<Weapon> weapons = getWeapons();
+        Weapon equippedWeapon = null;
+        for(int i = 0; i < weapons.size(); i++) {
+            if(weapons.get(i).isEquipped()) {
+                equippedWeapon = weapons.get(i);
+            }
+        }
+        return equippedWeapon;
+    }
+
+
+    class PopupActionListener implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            if(actionEvent.getActionCommand().equals("Equip")) {
+                
+                //get the currently equipped weapon and unequip it 
+                Weapon oldWeapon = getEquippedWeapon();
+                if(oldWeapon != null) {
+                    oldWeapon.unequip();
+                }
+                  
+                //get the source name i.e. the weapon name the user right clicked on
+                JMenuItem menuItem = (JMenuItem) actionEvent.getSource();
+                JPopupMenu popupMenu = (JPopupMenu) menuItem.getParent();
+                JLabel invoker = (JLabel)popupMenu.getInvoker();
+                String weaponName = invoker.getText();
+                
+                //find the position of the desired item in the list of weapons
+                int position = getWeaponNames().indexOf(weaponName);
+                
+                //get the weapon object from the list and equip it
+                Weapon newEquipped = (Weapon) getWeapons().get(position);
+                newEquipped.equip();
+                
+                System.out.println(newEquipped.getName());
+            }
+        }
     }
 }
