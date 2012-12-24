@@ -62,7 +62,7 @@ public class Board extends JPanel implements ActionListener {
     private void initEnemies() {
 
         enemies = new ArrayList();
-        enemies.add(new Enemy(600, 90));
+        enemies.add(new Zombie(600, 90));
     }
 
     private void initEntrances() {
@@ -318,13 +318,33 @@ public class Board extends JPanel implements ActionListener {
             for(int j = 0; j < enemies.size(); j++) {
                 Enemy enemy = (Enemy) enemies.get(j);
                 Rectangle enemyRect = enemy.getBounds();
-
+                
+                
                 //bullet hit an enemy
                 if(bulletRect.intersects(enemyRect)) {
                     bullet.setVisible(false);
-                    //if enemy health == 0
-                    enemy.setVisible(false);
-                    //else maybe make the enemy flash or move back                        
+                    int hp = enemy.getHitPoints();
+                    int currentHP = hp - leon.getEquippedWeaponFirepower();
+                    enemy.setHitPoints(currentHP);
+                    System.out.println(hp);
+                    if(currentHP == 0) {
+                        enemy.setVisible(false);
+                    }
+                    //else maybe make the enemy flash or move back  
+                    else {
+                        if(enemy.getDirection().equals("up")) {
+                            enemy.setY(enemy.getY() + 1);
+                        }
+                        if(enemy.getDirection().equals("down")) {
+                            enemy.setY(enemy.getY() - 1);
+                        }
+                        if(enemy.getDirection().equals("left")) {
+                            enemy.setX(enemy.getX() + 55);
+                        }
+                        if(enemy.getDirection().equals("right")) {
+                            enemy.setX(enemy.getX() - 55);
+                        }
+                    }
                 }
             }
         }

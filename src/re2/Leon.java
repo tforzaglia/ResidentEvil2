@@ -118,9 +118,18 @@ public class Leon {
     }
 
     public void showInventory() {
+        
         Inventory inventory = new Inventory();
         inventoryWindow = inventory.showInventory();
         inventoryWindow.setVisible(true);
+    }
+    
+    public int getEquippedWeaponFirepower() {
+        
+        Inventory inventory = new Inventory();
+        Weapon weapon = inventory.getEquippedWeapon();
+        int firepower = weapon.getFirepower();
+        return firepower;
     }
     
     //change the coordinates of Leon when the arrow keys are pressed

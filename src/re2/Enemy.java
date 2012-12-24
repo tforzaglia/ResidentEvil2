@@ -2,25 +2,20 @@ package re2;
 
 import java.awt.Image;
 import java.awt.Rectangle;
-import javax.swing.ImageIcon;
 
 public class Enemy {
 
-    private String enemy = "images/zombie.png";
     private int x;
     private int y;
-    private int width;
-    private int height;
+    public int width;
+    public int height;
     private boolean visible;
-    private Image image;
+    public Image image;
     private String direction = "null";
+    public int hitPoints;
 
     public Enemy(int x, int y) {
 
-        ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(enemy));
-        image = imageIcon.getImage();
-        width = image.getHeight(null);
-        height = image.getHeight(null);
         visible = true;
         this.x = x;
         this.y = y;
@@ -100,5 +95,13 @@ public class Enemy {
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, width, height);
+    }
+    
+    public int getHitPoints() {
+        return hitPoints;
+    }
+    
+    public void setHitPoints(int newHitPoints) {
+        hitPoints = newHitPoints;
     }
 }

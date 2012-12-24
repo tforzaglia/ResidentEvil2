@@ -64,3 +64,9 @@ Added a pop up menu to each item (JLabel) added to the inventory frame. For now,
 12/21/2012 2:59 AM
 Implemented the ability to equip different weapons by right clicking on the item name in the inventory menu, then selecting equip.
 Initialized the inventory with the 9mm handgun, already equipped when the game is started
+
+12/24/2012 6:27 AM
+Made enemy a superclass for all future types of enemies
+Added a Zombie class
+Added a hitPoints field for enemies and implemented the ability to kill enemies by landing shots on the enemy which will decrease its hp to 0
+Added knock back to enemy when it is hit by a bullet but not killed

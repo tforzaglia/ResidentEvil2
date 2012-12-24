@@ -11,6 +11,10 @@ public class Weapon extends Item {
         this.firepower = firepower;
     }
     
+    public int getFirepower() {
+        return firepower;
+    }
+    
     public void equip() {
         equipped = true;
     }
