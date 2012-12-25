@@ -12,30 +12,50 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 
 public class Inventory {
-    private JFrame inventoryWindow;
-   // private JPopupMenu popupMenu;
     
-    public ArrayList getInventory() {
-        return Board.getInventory();
+    private static JFrame inventoryWindow;
+    private static int handgunAmmoAmount = 5;
+    private static int shotgunAmmoAmount = 0;
+    private static int grenadeLauncherAmmoAmount = 0;
+    private static int magnumAmmoAmount = 0;
+    private static ArrayList<Item> inventory = new ArrayList<Item>();
+    private static ArrayList<Weapon> weapons = new ArrayList<Weapon>();
+    private static ArrayList<String> weaponNames = new ArrayList<String>();
+    
+    public void addToInventory(Item newItem) {
+        inventory.add(newItem);
     }
     
-    public ArrayList getWeapons() {
-        return Board.getWeapons();
+    public void addToWeapons(Weapon newWeapon) {
+        weapons.add(newWeapon);
     }
     
-    public ArrayList getWeaponNames() {
-        return Board.getWeaponNames();
+    public void addToWeaponNames(String newWeaponName) {
+        weaponNames.add(newWeaponName);
     }
     
+    public int getHandgunAmmoAmount() {
+        return handgunAmmoAmount;
+    }
+
+    public int getShotgunAmmoAmount() {
+        return shotgunAmmoAmount;
+    }
+
+    public int getGrenadeLauncherAmmoAmount() {
+        return grenadeLauncherAmmoAmount;
+    }
+
+    public int getMagnumAmmoAmount() {
+        return magnumAmmoAmount;
+    }
+ 
     public JFrame getFrame() {
         return inventoryWindow;
     }
     
     //bring up the inventory screen when the game is paused
-    public JFrame showInventory() {
-
-        //get the items in the inventory in an array list
-        ArrayList<Item> inventory = getInventory();
+    public static JFrame showInventory() {
         
         //create the frame and panel -- setup the panel
         inventoryWindow = new JFrame("Inventory");
@@ -71,9 +91,8 @@ public class Inventory {
         return inventoryWindow;
     }
     
-    public Weapon getEquippedWeapon() {
+    public static Weapon getEquippedWeapon() {
         
-        ArrayList<Weapon> weapons = getWeapons();
         Weapon equippedWeapon = null;
         for(int i = 0; i < weapons.size(); i++) {
             if(weapons.get(i).isEquipped()) {
@@ -82,9 +101,49 @@ public class Inventory {
         }
         return equippedWeapon;
     }
+    
+    public static int getEquippedAmmoCount() {
+        
+        if(getEquippedWeapon().getName().equals("9mm Handgun")) {
+            return handgunAmmoAmount;
+        }
+        else if(getEquippedWeapon().getName().equals("shotgun")) {
+            return shotgunAmmoAmount;
+        }
+        else if(getEquippedWeapon().getName().equals("grenade launcher")) {
+            return grenadeLauncherAmmoAmount;
+        }
+        else if(getEquippedWeapon().getName().equals("magnum")) {
+            return magnumAmmoAmount;
+        }
+        else {
+            return 0;
+        }
+    }
+    
+    public static void subtractEquippedAmmoCount() {
+        
+        if(getEquippedWeapon().getName().equals("9mm Handgun")) {
+            handgunAmmoAmount-=1;
+        }
+        else if(getEquippedWeapon().getName().equals("shotgun")) {
+            shotgunAmmoAmount-=1;
+        }
+        else if(getEquippedWeapon().getName().equals("grenade launcher")) {
+            grenadeLauncherAmmoAmount-=1;
+        }
+        else if(getEquippedWeapon().getName().equals("magnum")) {
+            magnumAmmoAmount-=1;
+        }
+    }
+    
+    public void increaseAmmo(String type, int amount) {
+        if(type.equals("Handgun Ammo")) {
+            handgunAmmoAmount+=amount;
+        }
+    }
 
-
-    class PopupActionListener implements ActionListener {
+    static class PopupActionListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -103,12 +162,13 @@ public class Inventory {
                 String weaponName = invoker.getText();
                 
                 //find the position of the desired item in the list of weapons
-                int position = getWeaponNames().indexOf(weaponName);
+                int position = weaponNames.indexOf(weaponName);
                 
                 //get the weapon object from the list and equip it
-                Weapon newEquipped = (Weapon) getWeapons().get(position);
+                Weapon newEquipped = (Weapon) weapons.get(position);
                 newEquipped.equip();
                 
+                //DEBUG: WORKS!!
                 System.out.println(newEquipped.getName());
             }
         }

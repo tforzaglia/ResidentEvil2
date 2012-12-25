@@ -70,3 +70,9 @@ Made enemy a superclass for all future types of enemies
 Added a Zombie class
 Added a hitPoints field for enemies and implemented the ability to kill enemies by landing shots on the enemy which will decrease its hp to 0
 Added knock back to enemy when it is hit by a bullet but not killed
+
+12/25/2012 6:34 AM
+Reworked the Inventory system. Now items, etc are added to arrays which are defined in the Inventory class through public methods called in the Board class. Inventory will be a singleton object and there will be only one Inventory object created for the duration of the game.
+Added Ammo class, which is a subclass of Item super class.
+Implemented limited ammo. Leon starts with 5 handgun bullets.
+Implemented picking up ammo and adding it to the overall ammo. Right now it always adds 10 bullets.

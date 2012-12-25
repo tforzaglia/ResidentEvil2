@@ -23,14 +23,12 @@ public class Board extends JPanel implements ActionListener {
     private ArrayList entrances;
     private ArrayList scenery;
     private ArrayList items;
-    private static ArrayList inventory;
-    private static ArrayList weapons;
-    private static ArrayList weaponNames;
     private boolean ingame;
     private boolean paused;
     private int B_WIDTH;
     private int B_HEIGHT;
     private String currentRoom;
+    private Inventory inventory;
 
     public Board() {
 
@@ -39,6 +37,7 @@ public class Board extends JPanel implements ActionListener {
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
 
+        inventory = new Inventory();
         ingame = true;
         paused = false;
         leon = new Leon();
@@ -89,16 +88,15 @@ public class Board extends JPanel implements ActionListener {
     private void initItems() {
 
         items = new ArrayList();
-        items.add(new Weapon(40, 300, "Shotgun", "images/handgun.png", 1));
-        inventory = new ArrayList<Item>();
-        weapons = new ArrayList<Weapon>();
-        weaponNames = new ArrayList<String>();
+        //items.add(new Weapon(40, 300, "Shotgun", "images/handgun.png", 1));
+        items.add(new Ammo(40, 300, "Handgun Ammo", "images/handgunAmmo.png", 10));
         
-        Weapon startGun = new Weapon(40, 300, "9mm Handgun", "images/handgun.png", 1);
+        Weapon startGun = new Weapon(0, 0, "9mm Handgun", "images/handgun.png", 1);
         startGun.equip();
-        inventory.add(startGun);
-        weapons.add(startGun);
-        weaponNames.add("9mm Handgun");
+        
+        inventory.addToInventory(startGun);
+        inventory.addToWeapons(startGun);       
+        inventory.addToWeaponNames("9mm Handgun");   
     }
 
     /**
@@ -178,7 +176,6 @@ public class Board extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
 
         ArrayList clip = leon.getBullets();
-
         //move the bullets across the screen
         for(int i = 0; i < clip.size(); i++) {
             Bullet bullet = (Bullet) clip.get(i);
@@ -283,10 +280,13 @@ public class Board extends JPanel implements ActionListener {
             Rectangle itemRect = item.getBounds();
             if(leonRect.intersects(itemRect)) {
                 item.setVisible(false);
-                inventory.add(item);
+                inventory.addToInventory(item);
                 if(item instanceof Weapon) {
-                    weapons.add(item);
-                    weaponNames.add(item.getName());
+                    inventory.addToWeapons((Weapon) item);
+                    inventory.addToWeaponNames(item.getName());
+                }
+                if(item instanceof Ammo) {
+                    inventory.increaseAmmo(item.getName(), 10);
                 }
                 items.remove(item);
             }
@@ -326,17 +326,17 @@ public class Board extends JPanel implements ActionListener {
                     int hp = enemy.getHitPoints();
                     int currentHP = hp - leon.getEquippedWeaponFirepower();
                     enemy.setHitPoints(currentHP);
-                    System.out.println(hp);
+                    //System.out.println(hp);
                     if(currentHP == 0) {
                         enemy.setVisible(false);
                     }
                     //else maybe make the enemy flash or move back  
                     else {
                         if(enemy.getDirection().equals("up")) {
-                            enemy.setY(enemy.getY() + 1);
+                            enemy.setY(enemy.getY() + 55);
                         }
                         if(enemy.getDirection().equals("down")) {
-                            enemy.setY(enemy.getY() - 1);
+                            enemy.setY(enemy.getY() - 55);
                         }
                         if(enemy.getDirection().equals("left")) {
                             enemy.setX(enemy.getX() + 55);
@@ -399,7 +399,7 @@ public class Board extends JPanel implements ActionListener {
             paused = false;
         }
     }
-    
+/*    
     public static ArrayList getInventory() {
         return inventory;
     }
@@ -411,7 +411,7 @@ public class Board extends JPanel implements ActionListener {
     public static ArrayList getWeaponNames() {
         return weaponNames;
     }
-
+*/
     public class TAdapter extends KeyAdapter {
 
         @Override

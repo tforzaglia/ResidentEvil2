@@ -51,6 +51,7 @@ public class Leon {
             y += dy;
         }
 
+        //keep Leon from going off the screen
         if(x < 1) {
             x = 1;
         }
@@ -102,7 +103,11 @@ public class Leon {
     }
 
     public void shoot() {
-        bullets.add(new Bullet(x + LEON_SIZE / 2, y + LEON_SIZE / 2));
+        if(Inventory.getEquippedAmmoCount() > 0) {
+            bullets.add(new Bullet(x + LEON_SIZE / 2, y + LEON_SIZE / 2));
+            Inventory.subtractEquippedAmmoCount();
+            System.out.println(Inventory.getEquippedAmmoCount());
+        }
     }
     
     public boolean isPaused() {
@@ -119,15 +124,13 @@ public class Leon {
 
     public void showInventory() {
         
-        Inventory inventory = new Inventory();
-        inventoryWindow = inventory.showInventory();
+        inventoryWindow = Inventory.showInventory();
         inventoryWindow.setVisible(true);
     }
     
     public int getEquippedWeaponFirepower() {
         
-        Inventory inventory = new Inventory();
-        Weapon weapon = inventory.getEquippedWeapon();
+        Weapon weapon = Inventory.getEquippedWeapon();
         int firepower = weapon.getFirepower();
         return firepower;
     }
@@ -150,6 +153,7 @@ public class Leon {
         if(key == KeyEvent.VK_SPACE) {
             shoot();
         } 
+        
         else if(key == KeyEvent.VK_LEFT) {
             dx = -2;
             direction = "left";
