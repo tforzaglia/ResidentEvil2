@@ -33,22 +33,6 @@ public class Inventory {
     public void addToWeaponNames(String newWeaponName) {
         weaponNames.add(newWeaponName);
     }
-    
-    public int getHandgunAmmoAmount() {
-        return handgunAmmoAmount;
-    }
-
-    public int getShotgunAmmoAmount() {
-        return shotgunAmmoAmount;
-    }
-
-    public int getGrenadeLauncherAmmoAmount() {
-        return grenadeLauncherAmmoAmount;
-    }
-
-    public int getMagnumAmmoAmount() {
-        return magnumAmmoAmount;
-    }
  
     public JFrame getFrame() {
         return inventoryWindow;
@@ -77,11 +61,17 @@ public class Inventory {
     
         //loop through the inventory and add each item as a label to the panel
         for(int i = 0; i < inventory.size(); i++) {
-            JLabel itemLabel = new JLabel(inventory.get(i).getName());
+            String itemName = inventory.get(i).getName();
+            JLabel itemLabel = new JLabel(itemName);
             itemLabel.setOpaque(true);
             itemLabel.setBackground(Color.CYAN);
             inventoryPanel.add(itemLabel);
-            itemLabel.setComponentPopupMenu(popupMenu);
+            
+            //remove the option to 'use' weapons -- only need to equip
+            if((itemName.contains("gun") || itemName.contains("Launcher")) && !itemName.contains("Ammo")){
+                itemLabel.setComponentPopupMenu(popupMenu);
+                use.setEnabled(false);
+            }
         }
         
         inventoryWindow.setContentPane(inventoryPanel);
@@ -107,13 +97,13 @@ public class Inventory {
         if(getEquippedWeapon().getName().equals("9mm Handgun")) {
             return handgunAmmoAmount;
         }
-        else if(getEquippedWeapon().getName().equals("shotgun")) {
+        else if(getEquippedWeapon().getName().equals("Shotgun")) {
             return shotgunAmmoAmount;
         }
-        else if(getEquippedWeapon().getName().equals("grenade launcher")) {
+        else if(getEquippedWeapon().getName().equals("Grenade Launcher")) {
             return grenadeLauncherAmmoAmount;
         }
-        else if(getEquippedWeapon().getName().equals("magnum")) {
+        else if(getEquippedWeapon().getName().equals("Magnum")) {
             return magnumAmmoAmount;
         }
         else {
@@ -126,21 +116,31 @@ public class Inventory {
         if(getEquippedWeapon().getName().equals("9mm Handgun")) {
             handgunAmmoAmount-=1;
         }
-        else if(getEquippedWeapon().getName().equals("shotgun")) {
+        else if(getEquippedWeapon().getName().equals("Shotgun")) {
             shotgunAmmoAmount-=1;
         }
-        else if(getEquippedWeapon().getName().equals("grenade launcher")) {
+        else if(getEquippedWeapon().getName().equals("Grenade Launcher")) {
             grenadeLauncherAmmoAmount-=1;
         }
-        else if(getEquippedWeapon().getName().equals("magnum")) {
+        else if(getEquippedWeapon().getName().equals("Magnum")) {
             magnumAmmoAmount-=1;
         }
     }
     
     public void increaseAmmo(String type, int amount) {
+        
         if(type.equals("Handgun Ammo")) {
             handgunAmmoAmount+=amount;
         }
+        if(type.equals("Shotgun Ammo")) {
+            shotgunAmmoAmount+=amount;
+        }
+        if(type.equals("Grenade Launcher Ammo")) {
+            grenadeLauncherAmmoAmount+=amount;
+        }
+        if(type.equals("Magnum Ammo")) {
+            magnumAmmoAmount+=amount;
+        }  
     }
 
     static class PopupActionListener implements ActionListener {
@@ -170,6 +170,10 @@ public class Inventory {
                 
                 //DEBUG: WORKS!!
                 System.out.println(newEquipped.getName());
+            }
+            
+            if(actionEvent.getActionCommand().equals("Use")) {
+                
             }
         }
     }

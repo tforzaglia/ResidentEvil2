@@ -76,3 +76,8 @@ Reworked the Inventory system. Now items, etc are added to arrays which are defi
 Added Ammo class, which is a subclass of Item super class.
 Implemented limited ammo. Leon starts with 5 handgun bullets.
 Implemented picking up ammo and adding it to the overall ammo. Right now it always adds 10 bullets.
+
+12/26/2012 6:23 AM
+Removed the option to select use when right clicking on weapons
+Removed the option to select anything when right clicking on ammo (no need to equip or use) 
+

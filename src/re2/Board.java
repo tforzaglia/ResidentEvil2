@@ -88,7 +88,7 @@ public class Board extends JPanel implements ActionListener {
     private void initItems() {
 
         items = new ArrayList();
-        //items.add(new Weapon(40, 300, "Shotgun", "images/handgun.png", 1));
+        //items.add(new Weapon(40, 600, "Shotgun", "images/handgun.png", 1));
         items.add(new Ammo(40, 300, "Handgun Ammo", "images/handgunAmmo.png", 10));
         
         Weapon startGun = new Weapon(0, 0, "9mm Handgun", "images/handgun.png", 1);
