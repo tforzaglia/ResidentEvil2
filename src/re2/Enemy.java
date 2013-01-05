@@ -13,6 +13,7 @@ public class Enemy {
     public Image image;
     private String direction = "null";
     public int hitPoints;
+    public int strength;
 
     public Enemy(int x, int y) {
 
@@ -103,5 +104,9 @@ public class Enemy {
     
     public void setHitPoints(int newHitPoints) {
         hitPoints = newHitPoints;
+    }
+    
+    public int getStrength() {
+        return strength;
     }
 }

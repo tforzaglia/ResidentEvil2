@@ -27,6 +27,7 @@ public class Leon {
     private String direction = "null";
     private boolean gamePaused = false;
     private JFrame inventoryWindow;
+    private int health = 10;
 
     //constructor: set up the image and set the location
     public Leon() {
@@ -133,6 +134,14 @@ public class Leon {
         Weapon weapon = Inventory.getEquippedWeapon();
         int firepower = weapon.getFirepower();
         return firepower;
+    }
+    
+    public int getHealth() {
+        return health;
+    }
+    
+    public void setHealth(int newHealth) {
+        health = newHealth;
     }
     
     //change the coordinates of Leon when the arrow keys are pressed

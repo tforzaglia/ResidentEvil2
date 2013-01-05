@@ -13,6 +13,7 @@ public class Zombie extends Enemy {
         width = image.getHeight(null);
         height = image.getHeight(null);
         hitPoints = 3;
+        strength = 1;
     }
     
     

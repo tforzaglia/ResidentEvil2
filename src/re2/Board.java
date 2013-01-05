@@ -298,13 +298,28 @@ public class Board extends JPanel implements ActionListener {
             Rectangle enemyRect = enemy.getBounds();
 
             //got attacked -- subtract from Leon's health and move him back a few steps
-            if (leonRect.intersects(enemyRect)) {
-                //health--
-                //if health != 0
-                //move leon backwards a bit
-                //else (health == 0)
-                //ingame = false (game over)
-                //System.out.println("DEBUG : ATTCKED!");
+            if(leonRect.intersects(enemyRect)) {
+                int hp = leon.getHealth() - enemy.getStrength();
+                leon.setHealth(hp);
+                //Leon is dead -- game over -- stop drawing 
+                if(hp == 0) {
+                    ingame = false;
+                }
+                //Leon is attacked but not dead -- push the enemy back
+                else {
+                    if(enemy.getDirection().equals("up")) {
+                        enemy.setY(enemy.getY() + 55);
+                    }
+                    if(enemy.getDirection().equals("down")) {
+                        enemy.setY(enemy.getY() - 55);
+                    }
+                    if(enemy.getDirection().equals("left")) {
+                        enemy.setX(enemy.getX() + 55);
+                    }
+                    if(enemy.getDirection().equals("right")) {
+                        enemy.setX(enemy.getX() - 55);
+                    }
+                }
             }
         } 
 
@@ -319,7 +334,6 @@ public class Board extends JPanel implements ActionListener {
                 Enemy enemy = (Enemy) enemies.get(j);
                 Rectangle enemyRect = enemy.getBounds();
                 
-                
                 //bullet hit an enemy
                 if(bulletRect.intersects(enemyRect)) {
                     bullet.setVisible(false);
@@ -330,7 +344,7 @@ public class Board extends JPanel implements ActionListener {
                     if(currentHP == 0) {
                         enemy.setVisible(false);
                     }
-                    //else maybe make the enemy flash or move back  
+                    //else maybe make the enemy move back  
                     else {
                         if(enemy.getDirection().equals("up")) {
                             enemy.setY(enemy.getY() + 55);

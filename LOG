@@ -81,3 +81,8 @@ Implemented picking up ammo and adding it to the overall ammo. Right now it alwa
 Removed the option to select use when right clicking on weapons
 Removed the option to select anything when right clicking on ammo (no need to equip or use) 
 
+01/04/2013 11:55 PM
+Added strength variable for enemies -- zombie strength is 1, meaning everytime a zombie touches Leon, his HP will be reduced by 1
+Added health variable for Leon -- currently max is set to 10
+Implemented game over when Leon's health is reduced to 0 -- all drawing is stopped
+
