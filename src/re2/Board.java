@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -142,6 +144,10 @@ public class Board extends JPanel implements ActionListener {
             
             //draw Leon
             graphics2d.drawImage(leon.getImage(), leon.getX(), leon.getY(), this);
+            
+            //display the number of bullets left for the equipped weapon
+            graphics2d.setColor(Color.WHITE);
+            graphics2d.drawString("Bullets Left: " + inventory.getEquippedAmmoCount(), 5, 890);
 
             //draw all enemies from the array
             for(int i = 0; i < enemies.size(); i++) {
@@ -151,16 +157,12 @@ public class Board extends JPanel implements ActionListener {
                 }
             }
         } else {
-
-            //if Leon's health == 0 display the game over screen below and disbale resume
-            /*
-            String message = "YOU ARE DEAD";
-            Font font = new Font("Helvetica", Font.BOLD, 30);
-            FontMetrics metrics = this.getFontMetrics(font);
-
-            graphics.setColor(Color.red);
-            graphics.setFont(font);
-            graphics.drawString(message, (B_WIDTH = metrics.stringWidth(message)) / 2, B_HEIGHT / 2);*/
+            //Leon is dead, so display the game over screen
+            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource("images/gameOver.png"));
+            Image image = imageIcon.getImage();
+            
+            Graphics2D graphics2d = (Graphics2D) graphics;
+            graphics2d.drawImage(image, 400, 50, this);
         }
 
         Toolkit.getDefaultToolkit().sync();
@@ -180,7 +182,19 @@ public class Board extends JPanel implements ActionListener {
         for(int i = 0; i < clip.size(); i++) {
             Bullet bullet = (Bullet) clip.get(i);
             if(bullet.isVisible()) {
-                bullet.move();
+                //move the bullet in the direction Leon is facing
+                if(leon.getDirection().equals("right")) {
+                    bullet.moveRight();
+                }
+                if(leon.getDirection().equals("left")) {
+                    bullet.moveLeft();
+                }
+                if(leon.getDirection().equals("down")) {
+                    bullet.moveDown();
+                }
+                if(leon.getDirection().equals("up")) {
+                    bullet.moveUp();
+                }
             } else {
                 clip.remove(i);
             }
@@ -302,7 +316,7 @@ public class Board extends JPanel implements ActionListener {
                 int hp = leon.getHealth() - enemy.getStrength();
                 leon.setHealth(hp);
                 //Leon is dead -- game over -- stop drawing 
-                if(hp == 0) {
+                if(hp <= 0) {
                     ingame = false;
                 }
                 //Leon is attacked but not dead -- push the enemy back

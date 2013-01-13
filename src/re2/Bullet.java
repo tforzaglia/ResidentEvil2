@@ -13,7 +13,8 @@ public class Bullet {
     private Image image;
     boolean visible;
     private final int BOARD_WIDTH = 1500;
-    private final int MISSLE_SPEED = 2;
+    private final int BOARD_HEIGHT = 900;
+    private final int BULLET_SPEED = 55;
 
     public Bullet(int x, int y) {
 
@@ -50,10 +51,33 @@ public class Bullet {
         return new Rectangle(x, y, width, height);
     }
 
-    public void move() {
-
-        x += MISSLE_SPEED;
+    public void moveRight() {
+        x += BULLET_SPEED;
         if(x > BOARD_WIDTH) {
+            visible = false;
+        }
+    }
+    
+    public void moveLeft() {
+
+        x -= BULLET_SPEED;
+        if(x < 0) {
+            visible = false;
+        }
+    }
+    
+    public void moveDown() {
+
+        y += BULLET_SPEED;
+        if(y > BOARD_HEIGHT) {
+            visible = false;
+        }
+    }
+    
+    public void moveUp() {
+
+        y -= BULLET_SPEED;
+        if(y < 0) {
             visible = false;
         }
     }

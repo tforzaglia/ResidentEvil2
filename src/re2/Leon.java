@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 
 public class Leon {
 
-    private String leon = "images/leon.png";
+    private String leon = "images/leonRight.png";
     
     //change in coordinates
     private int dx;
@@ -24,7 +24,7 @@ public class Leon {
     private Image image;
     private ArrayList bullets;
     private final int LEON_SIZE = 61;
-    private String direction = "null";
+    private String direction = "right";
     private boolean gamePaused = false;
     private JFrame inventoryWindow;
     private int health = 10;
@@ -166,18 +166,30 @@ public class Leon {
         else if(key == KeyEvent.VK_LEFT) {
             dx = -2;
             direction = "left";
+            leon = "images/leonLeft.png";
+            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(leon));
+            image = imageIcon.getImage();
         } 
         else if(key == KeyEvent.VK_RIGHT) {
             dx = 2;
             direction = "right";
+            leon = "images/leonRight.png";
+            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(leon));
+            image = imageIcon.getImage();
         } 
         else if(key == KeyEvent.VK_UP) {
             dy = -2;
             direction = "up";
+            leon = "images/leonUp.png";
+            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(leon));
+            image = imageIcon.getImage();
         } 
         else if(key == KeyEvent.VK_DOWN) {
             dy = 2;
             direction = "down";
+            leon = "images/leonDown.png";
+            ImageIcon imageIcon = new ImageIcon(this.getClass().getResource(leon));
+            image = imageIcon.getImage();
         }
     }
 
